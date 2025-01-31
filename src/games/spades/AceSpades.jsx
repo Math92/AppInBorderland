@@ -2,7 +2,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useGame } from '../../context/GameContext';
 import { SPADE_GAMES } from '../types.js';
-import styles from './AceSpades.module.css';
+import PlayingCard from '../../components/Card/PlayingCard.jsx';
+import styles from './AceSpades.module.css'
 
 const AceSpades = () => {
   const { updateResults } = useGame();
@@ -54,6 +55,7 @@ const AceSpades = () => {
 
   return (
     <div className={styles.container}>
+      <PlayingCard cardId="A-spades" />
       <div className={styles.header}>
         {gameConfig.name} | Tiempo: {timeLeft}s | Golpes: {clicks}
       </div>

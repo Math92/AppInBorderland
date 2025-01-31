@@ -1,76 +1,95 @@
 // ThreeSpades.jsx
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useGame } from '../../context/GameContext';
 import { SPADE_GAMES } from '../types.js';
+import PlayingCard from '../../components/Card/PlayingCard';
 import styles from './ThreeSpades.module.css';
+
+const GAME_BUTTONS = ['↑', '↓', '←', '→'];
+const COMBO_LENGTH = 4;
+
+const generateRandomCombo = () => 
+  Array(COMBO_LENGTH).fill()
+    .map(() => GAME_BUTTONS[Math.floor(Math.random() * GAME_BUTTONS.length)]);
 
 const ThreeSpades = () => {
   const { updateResults } = useGame();
   const gameConfig = SPADE_GAMES.THREE;
+  const timerRef = useRef(null);
   
   const [timeLeft, setTimeLeft] = useState(15);
   const [score, setScore] = useState(0);
   const [currentCombo, setCurrentCombo] = useState([]);
-  const [targetCombo, setTargetCombo] = useState([]);
+  const [targetCombo, setTargetCombo] = useState(generateRandomCombo);
   const [isFinished, setIsFinished] = useState(false);
+  const [shouldUpdateResults, setShouldUpdateResults] = useState(false);
 
-  const buttons = ['↑', '↓', '←', '→'];
-  const comboLength = 4;
-  
-  const generateCombo = useCallback(() => {
-    const newCombo = Array(comboLength).fill()
-      .map(() => buttons[Math.floor(Math.random() * buttons.length)]);
-    setTargetCombo(newCombo);
-    setCurrentCombo([]);
-  }, [buttons]);
-
-  const handleGameEnd = useCallback(() => {
-    setIsFinished(true);
-    updateResults({
-      score,
-      success: score >= gameConfig.minCombos
-    });
-  }, [score, updateResults, gameConfig.minCombos]);
-
+  // Efecto para manejar la finalización del juego
   useEffect(() => {
-    generateCombo();
-    const timer = setInterval(() => {
+    if (shouldUpdateResults) {
+      updateResults({
+        score,
+        success: score >= gameConfig.minCombos
+      });
+      setShouldUpdateResults(false);
+    }
+  }, [shouldUpdateResults, score, gameConfig.minCombos, updateResults]);
+
+  // Timer del juego
+  useEffect(() => {
+    if (isFinished) return;
+
+    timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 0) {
-          clearInterval(timer);
-          handleGameEnd();
+          clearInterval(timerRef.current);
+          setIsFinished(true);
+          setShouldUpdateResults(true);
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-    return () => clearInterval(timer);
-  }, [generateCombo, handleGameEnd]);
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [isFinished]);
+
+  const generateNewCombo = () => {
+    setTargetCombo(generateRandomCombo());
+    setCurrentCombo([]);
+  };
 
   const handleButton = (button) => {
     if (isFinished) return;
-    
+
     const newCombo = [...currentCombo, button];
     setCurrentCombo(newCombo);
 
     if (newCombo[newCombo.length - 1] !== targetCombo[newCombo.length - 1]) {
-      setTimeout(setCurrentCombo, 200, []);
+      // Combo incorrecto
+      setTimeout(() => setCurrentCombo([]), 200);
       return;
     }
 
     if (newCombo.length === targetCombo.length) {
+      // Combo completado correctamente
       setScore(prev => prev + 1);
-      setTimeout(generateCombo, 500);
+      setTimeout(generateNewCombo, 500);
     }
   };
 
   return (
     <div className={styles.container}>
+      <PlayingCard cardId="3-spades" />
       <div className={styles.header}>
         {gameConfig.name} | Tiempo: {timeLeft}s | Combos: {score}/{gameConfig.minCombos}
       </div>
 
-      {!isFinished ? (
+      {!isFinished && (
         <div className={styles.gameArea}>
           <div className={styles.comboDisplay}>
             <div className={styles.comboRow}>
@@ -101,7 +120,7 @@ const ThreeSpades = () => {
             <button onClick={() => handleButton('↓')} className={styles.arrow}>↓</button>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };

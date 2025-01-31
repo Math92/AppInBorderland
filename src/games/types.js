@@ -21,7 +21,7 @@ export const SPADE_GAMES = {
       name: 'Combo de Poder',
       description: 'Realiza la secuencia de teclas para ejecutar combos de fuerza',
       difficulty: 3,
-      maxTime: 30,
+      maxTime: 40,
       minCombos: 5
     },
   };

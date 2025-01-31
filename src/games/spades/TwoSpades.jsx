@@ -1,50 +1,63 @@
 // TwoSpades.jsx
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useGame } from '../../context/GameContext';
 import { SPADE_GAMES } from '../types.js';
 import styles from './TwoSpades.module.css';
+import PlayingCard from '../../components/Card/PlayingCard.jsx';
 
 const TwoSpades = () => {
   const { updateResults } = useGame();
   const gameConfig = SPADE_GAMES.TWO;
+  const timerRef = useRef(null);
+  const intervalRef = useRef(null);
   
   const [power, setPower] = useState(0);
   const [isHolding, setIsHolding] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15);
   const [maxPower, setMaxPower] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const [shouldUpdateResults, setShouldUpdateResults] = useState(false);
 
-  const handleGameEnd = useCallback(() => {
-    setIsFinished(true);
-    updateResults({
-      score: maxPower,
-      success: maxPower >= gameConfig.minPower
-    });
-  }, [maxPower, gameConfig.minPower, updateResults]);
+  // Efecto para manejar la finalización del juego
+  useEffect(() => {
+    if (shouldUpdateResults) {
+      updateResults({
+        score: maxPower,
+        success: maxPower >= gameConfig.minPower
+      });
+      setShouldUpdateResults(false);
+    }
+  }, [shouldUpdateResults, maxPower, gameConfig.minPower, updateResults]);
 
   // Timer del juego
   useEffect(() => {
-    const timer = setInterval(() => {
+    if (isFinished) return;
+
+    timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 0) {
-          handleGameEnd();
+          clearInterval(timerRef.current);
+          setIsFinished(true);
+          setShouldUpdateResults(true);
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-    
-    return () => clearInterval(timer);
-  }, [handleGameEnd]);
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [isFinished]);
 
   // Manejo del poder
   useEffect(() => {
     if (isFinished) return;
 
-    let intervalId;
     if (isHolding) {
-      // Incrementar poder mientras se mantiene presionado
-      intervalId = setInterval(() => {
+      intervalRef.current = setInterval(() => {
         setPower(currentPower => {
           const newPower = Math.min(currentPower + 2, 100);
           setMaxPower(prev => Math.max(prev, newPower));
@@ -52,14 +65,15 @@ const TwoSpades = () => {
         });
       }, 50);
     } else {
-      // Decrementar poder cuando se suelta
-      intervalId = setInterval(() => {
+      intervalRef.current = setInterval(() => {
         setPower(currentPower => Math.max(currentPower - 3, 0));
       }, 50);
     }
 
     return () => {
-      if (intervalId) clearInterval(intervalId);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
   }, [isHolding, isFinished]);
 
@@ -76,11 +90,12 @@ const TwoSpades = () => {
 
   return (
     <div className={styles.container}>
+      <PlayingCard cardId="2-spades" />
       <div className={styles.header}>
         {gameConfig.name} | Tiempo: {timeLeft}s | Máximo: {maxPower}%
       </div>
 
-      {!isFinished ? (
+      {!isFinished && (
         <div className={styles.gameArea}>
           <div className={styles.powerBar}>
             <div 
@@ -106,7 +121,7 @@ const TwoSpades = () => {
             <span>Objetivo: {gameConfig.minPower}%</span>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
