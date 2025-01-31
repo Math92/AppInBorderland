@@ -1,5 +1,5 @@
 // TwoSpades.jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useGame } from '../../context/GameContext';
 import { SPADE_GAMES } from '../types.js';
 import styles from './TwoSpades.module.css';
@@ -14,16 +14,20 @@ const TwoSpades = () => {
   const [maxPower, setMaxPower] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
 
-  // Timer para el juego
+  const handleGameEnd = useCallback(() => {
+    setIsFinished(true);
+    updateResults({
+      score: maxPower,
+      success: maxPower >= gameConfig.minPower
+    });
+  }, [maxPower, gameConfig.minPower, updateResults]);
+
+  // Timer del juego
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 0) {
-          setIsFinished(true);
-          updateResults({
-            score: maxPower,
-            success: maxPower >= gameConfig.minPower 
-          });
+          handleGameEnd();
           return 0;
         }
         return prev - 1;
@@ -31,42 +35,42 @@ const TwoSpades = () => {
     }, 1000);
     
     return () => clearInterval(timer);
-  }, [maxPower, gameConfig.minPower, updateResults]);
+  }, [handleGameEnd]);
 
-  // Control de poder
+  // Manejo del poder
   useEffect(() => {
-    let powerInterval;
-    
-    if (isHolding && !isFinished) {
-      powerInterval = setInterval(() => {
-        if (power < 100) {
-          setPower(current => {
-            const newPower = Math.min(current + 2, 100);
-            setMaxPower(prev => Math.max(prev, newPower));
-            return newPower;
-          });
-        }
-      }, 100);
-    } else if (!isHolding) {
-      powerInterval = setInterval(() => {
-        setPower(prev => Math.max(prev - 4, 0));
-      }, 100);
+    if (isFinished) return;
+
+    let intervalId;
+    if (isHolding) {
+      // Incrementar poder mientras se mantiene presionado
+      intervalId = setInterval(() => {
+        setPower(currentPower => {
+          const newPower = Math.min(currentPower + 2, 100);
+          setMaxPower(prev => Math.max(prev, newPower));
+          return newPower;
+        });
+      }, 50);
+    } else {
+      // Decrementar poder cuando se suelta
+      intervalId = setInterval(() => {
+        setPower(currentPower => Math.max(currentPower - 3, 0));
+      }, 50);
     }
 
     return () => {
-      if (powerInterval) clearInterval(powerInterval);
+      if (intervalId) clearInterval(intervalId);
     };
-  }, [isHolding, isFinished, power]);
+  }, [isHolding, isFinished]);
 
-  const handleMouseDown = () => {
-    if (!isFinished) setIsHolding(true);
+  // Manejadores de eventos del mouse/touch
+  const startHolding = () => {
+    if (!isFinished) {
+      setIsHolding(true);
+    }
   };
 
-  const handleMouseUp = () => {
-    setIsHolding(false);
-  };
-
-  const handleMouseLeave = () => {
+  const stopHolding = () => {
     setIsHolding(false);
   };
 
@@ -86,21 +90,23 @@ const TwoSpades = () => {
           </div>
 
           <button
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseLeave}
+            onMouseDown={startHolding}
+            onMouseUp={stopHolding}
+            onMouseLeave={stopHolding}
+            onTouchStart={startHolding}
+            onTouchEnd={stopHolding}
             className={`${styles.holdButton} ${isHolding ? styles.holding : ''}`}
+            disabled={isFinished}
           >
             {isHolding ? '¡MANTÉN!' : 'PRESIONA'}
           </button>
+
+          <div className={styles.powerInfo}>
+            <span>Poder actual: {power}%</span>
+            <span>Objetivo: {gameConfig.minPower}%</span>
+          </div>
         </div>
-      ) : (
-        <div className={styles.results}>
-          <h2>{maxPower >= gameConfig.minPower ? '¡Victoria!' : 'Derrota'}</h2>
-          <p>Poder máximo: {maxPower}%</p>
-          <p>Objetivo: {gameConfig.minPower}%</p>
-        </div>
-      )}
+      ) : null}
     </div>
   );
 };

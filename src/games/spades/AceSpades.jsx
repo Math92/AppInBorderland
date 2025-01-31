@@ -1,5 +1,5 @@
 // AceSpades.jsx
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useGame } from '../../context/GameContext';
 import { SPADE_GAMES } from '../types.js';
 import styles from './AceSpades.module.css';
@@ -11,29 +11,40 @@ const AceSpades = () => {
   const [clicks, setClicks] = useState(0);
   const [timeLeft, setTimeLeft] = useState(15);
   const [isFinished, setIsFinished] = useState(false);
+  
+  // Usar useRef para tracking del timer
+  const timerRef = useRef(null);
 
-  const handleGameEnd = useCallback(() => {
-    setIsFinished(true);
-    updateResults({
-      score: clicks,
-      success: clicks >= gameConfig.minScore
-    });
-  }, [clicks, updateResults, gameConfig.minScore]);
-
+  // Manejar la finalización del juego
   useEffect(() => {
-    const timer = setInterval(() => {
+    if (isFinished && !timerRef.current) {
+      updateResults({
+        score: clicks,
+        success: clicks >= gameConfig.minScore
+      });
+    }
+  }, [isFinished, clicks, updateResults, gameConfig.minScore]);
+
+  // Timer del juego
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 0) {
-          clearInterval(timer);
-          handleGameEnd();
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+          setIsFinished(true);
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [handleGameEnd]);
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, []);
 
   const handleClick = () => {
     if (!isFinished) {
@@ -47,7 +58,7 @@ const AceSpades = () => {
         {gameConfig.name} | Tiempo: {timeLeft}s | Golpes: {clicks}
       </div>
 
-      {!isFinished ? (
+      {!isFinished && (
         <div className={styles.gameArea}>
           <button
             onClick={handleClick}
@@ -62,8 +73,13 @@ const AceSpades = () => {
               style={{ width: `${(clicks / gameConfig.minScore) * 100}%` }}
             />
           </div>
+
+          <div className={styles.gameInfo}>
+            <span>Objetivo: {gameConfig.minScore} golpes</span>
+            <span>Progreso: {Math.floor((clicks / gameConfig.minScore) * 100)}%</span>
+          </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
