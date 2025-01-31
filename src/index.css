@@ -1,0 +1,307 @@
+/* Reset básico y estilos generales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #111827;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-in-out;
+}
+
+/* Estilos para las cartas */
+.card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  background: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Botones */
+.button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+  background: linear-gradient(145deg, #dc2626 0%, #991b1b 100%);
+  border: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.3);
+}
+
+.button:active {
+  transform: scale(0.95);
+}
+
+/* Contenedor del juego */
+.container-game {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Sección de juego */
+.game-section {
+  margin: 32px 0;
+  padding: 24px;
+  border-radius: 12px;
+  background-color: #1f2937;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos */
+.title-main {
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 32px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.title-section {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* Resultados */
+.result-success {
+  background-color: #065f46;
+  color: #d1fae5;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.result-failure {
+  background-color: #991b1b;
+  color: #fee2e2;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+/* Área de juego */
+.game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  border-radius: 12px;
+  padding: 32px;
+  background: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+}
+
+/* Estadísticas */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.stat-card {
+  padding: 16px;
+  border-radius: 8px;
+  background-color: #1f2937;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .title-main {
+    font-size: 30px;
+  }
+
+  .game-section {
+    padding: 16px;
+  }
+
+  .container-game {
+    padding: 0 8px;
+  }
+}
+
+
+/* Añadir al final del archivo */
+
+/* Contenedor principal centrado */
+.main-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+/* Tarjeta de datos moderna */
+.data-card {
+  background: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.data-card:hover {
+  transform: translateY(-3px);
+}
+
+.data-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.data-card-icon {
+  width: 40px;
+  height: 40px;
+  background: #dc2626;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.data-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+}
+
+.data-card-content {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.data-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.data-label {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.data-value {
+  color: white;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+}
+
+/* Modificación para centrar el contenido del juego */
+.container-game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 160px);
+}
+
+/* Ajustar sección de juego */
+.game-section {
+  margin: 1rem auto;
+  width: 95%;
+  max-width: 800px;
+}
+
+/* Media queries para responsive */
+@media (max-width: 768px) {
+  .data-card {
+    margin: 1rem;
+  }
+  
+  .data-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .data-value {
+    width: 100%;
+    text-align: center;
+  }
+}
