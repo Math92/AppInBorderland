@@ -4,27 +4,28 @@ import { characters } from '../data/charactersData.js';
 import { suits, ranks, calculateDifficulty } from '../data/cardData.js';
 import { getRandomQuestion } from '../data/questionsData.js';
 
+// Estados del juego
 export const GAME_STATES = {
-  CHARACTER_SELECTION: 'CHARACTER_SELECTION',
-  READY_TO_START: 'READY_TO_START',
-  PLAYING: 'PLAYING',
-  SHOWING_RESULTS: 'SHOWING_RESULTS',
-  FINISHED: 'FINISHED'
+  CHARACTER_SELECTION: 'CHARACTER_SELECTION', // Selección inicial del personaje
+  PLAYING: 'PLAYING',           // Jugando la partida
+  FINISHED: 'FINISHED'          // Juego terminado
 };
 
+// Tipos de acciones para el reducer
 const actionTypes = {
   SELECT_CHARACTER: 'SELECT_CHARACTER',
-  DRAW_CARD: 'DRAW_CARD',
-  UPDATE_ROUND_RESULTS: 'UPDATE_ROUND_RESULTS',
-  START_NEXT_ROUND: 'START_NEXT_ROUND',
+  START_GAME: 'START_GAME',
+  UPDATE_RESULTS: 'UPDATE_RESULTS',
   RESET_GAME: 'RESET_GAME'
 };
 
+// Configuración de cartas implementadas (solo picas)
 const IMPLEMENTED_CARDS = ranks.slice(0, 3).map(rank => ({
   rank,
   suit: 'spades'
 }));
 
+// Crear mazo inicial
 const createInitialDeck = () => 
   IMPLEMENTED_CARDS.map(({ rank, suit }) => ({
     id: `${rank}-${suit}`,
@@ -37,23 +38,22 @@ const createInitialDeck = () =>
     used: false
   }));
 
+// Generar resultados de NPCs
 const generateNPCResults = (currentCard, mainPlayers, selectedCharacter) => {
   if (!currentCard || !mainPlayers || !selectedCharacter) return [];
 
+  // Resultados de personajes principales (excluyendo al seleccionado)
   const mainPlayersResults = mainPlayers
     .filter(char => char.id !== selectedCharacter.id)
-    .map(char => {
-      const bonusProb = char.bonusTypes.includes(currentCard.suit) ? 0.2 : 0;
-      const success = Math.random() < (char.luckyNumber + bonusProb);
-      return {
-        id: char.id,
-        name: char.name,
-        success,
-        score: Math.floor(Math.random() * 100),
-        isMainCharacter: true
-      };
-    });
+    .map(char => ({
+      id: char.id,
+      name: char.name,
+      success: Math.random() < char.luckyNumber,
+      score: Math.floor(Math.random() * 100),
+      isMainCharacter: true
+    }));
 
+  // Resultados de NPCs genéricos
   const npcResults = Array.from({ length: 43 }, (_, index) => ({
     id: `npc-${index + 1}`,
     name: `Jugador ${index + 1}`,
@@ -65,35 +65,31 @@ const generateNPCResults = (currentCard, mainPlayers, selectedCharacter) => {
   return [...mainPlayersResults, ...npcResults];
 };
 
+// Estado inicial del juego
 const initialState = {
   availableCharacters: characters,
   selectedCharacter: null,
   deck: createInitialDeck(),
   currentCard: null,
   gameState: GAME_STATES.CHARACTER_SELECTION,
-  roundResults: [],
-  currentRound: 1,
-  maxRounds: 3,
   allPlayersResults: [],
-  currentRoundResults: null
+  currentGameResults: null
 };
 
+// Reducer del juego
 const gameReducer = (state, action) => {
   switch (action.type) {
     case actionTypes.SELECT_CHARACTER:
       return {
         ...state,
         selectedCharacter: action.payload,
-        gameState: GAME_STATES.READY_TO_START
+        gameState: GAME_STATES.PLAYING
       };
 
-    case actionTypes.DRAW_CARD: {
+    case actionTypes.START_GAME: {
       const availableCards = state.deck.filter(card => !card.used);
-      if (availableCards.length === 0) return state;
-      
       const randomCard = availableCards[Math.floor(Math.random() * availableCards.length)];
-      if (!randomCard) return state;
-
+      
       const npcResults = generateNPCResults(
         randomCard, 
         state.availableCharacters, 
@@ -102,42 +98,19 @@ const gameReducer = (state, action) => {
 
       return {
         ...state,
-        currentCard: { 
-          ...randomCard, 
-          question: getRandomQuestion(randomCard.suit, randomCard.difficulty) 
+        currentCard: {
+          ...randomCard,
+          question: getRandomQuestion(randomCard.suit, randomCard.difficulty)
         },
-        deck: state.deck.map(card => 
-          card.id === randomCard.id ? {...card, used: true} : card
-        ),
-        allPlayersResults: npcResults,
-        gameState: GAME_STATES.PLAYING
+        allPlayersResults: npcResults
       };
     }
 
-    case actionTypes.UPDATE_ROUND_RESULTS: {
-      const newRoundResult = {
-        round: state.currentRound,
-        playerResult: action.payload,
-        npcResults: state.allPlayersResults,
-        card: state.currentCard
-      };
-
-      const isFinalRound = state.currentRound >= state.maxRounds;
-
+    case actionTypes.UPDATE_RESULTS:
       return {
         ...state,
-        roundResults: [...state.roundResults, newRoundResult],
-        currentRoundResults: newRoundResult,
-        gameState: isFinalRound ? GAME_STATES.FINISHED : GAME_STATES.SHOWING_RESULTS
-      };
-    }
-
-    case actionTypes.START_NEXT_ROUND:
-      return {
-        ...state,
-        currentRound: state.currentRound + 1,
-        currentRoundResults: null,
-        gameState: GAME_STATES.READY_TO_START
+        currentGameResults: action.payload,
+        gameState: GAME_STATES.FINISHED
       };
 
     case actionTypes.RESET_GAME:
@@ -151,6 +124,7 @@ const gameReducer = (state, action) => {
   }
 };
 
+// Contexto y Provider
 export const GameContext = createContext(null);
 
 export const GameProvider = ({ children }) => {
@@ -162,12 +136,11 @@ export const GameProvider = ({ children }) => {
       type: actionTypes.SELECT_CHARACTER, 
       payload: character 
     }),
-    drawCard: () => dispatch({ type: actionTypes.DRAW_CARD }),
-    updateRoundResults: (results) => dispatch({
-      type: actionTypes.UPDATE_ROUND_RESULTS,
+    startGame: () => dispatch({ type: actionTypes.START_GAME }),
+    updateResults: (results) => dispatch({
+      type: actionTypes.UPDATE_RESULTS,
       payload: results
     }),
-    startNextRound: () => dispatch({ type: actionTypes.START_NEXT_ROUND }),
     resetGame: () => dispatch({ type: actionTypes.RESET_GAME })
   };
 
@@ -182,10 +155,11 @@ GameProvider.propTypes = {
   children: PropTypes.node.isRequired
 };
 
+// Hook personalizado para usar el contexto
 export const useGame = () => {
   const context = useContext(GameContext);
   if (!context) {
-    throw new Error('useGame must be used within a GameProvider');
+    throw new Error('useGame debe usarse dentro de un GameProvider');
   }
   return context;
 };

@@ -1,0 +1,93 @@
+/* GameStart.module.css */
+.container {
+    min-height: 100vh;
+    background: #111827;
+    color: #fff;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   }
+   
+   .mainCard {
+    width: 100%; 
+    max-width: 64rem;
+    margin: 1rem;
+    padding: 1.5rem;
+    background: #1f2937;  
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+   }
+   
+   .grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+   }
+   
+   .characterCard {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background: #374151;
+   }
+   
+   .selected {
+    background: #4c1d95;
+   }
+   
+   .characterName {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #fff;
+   }
+   
+   .description {
+    color: #d1d5db;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+   }
+   
+   .ability {
+    color: #c084fc;
+    font-size: 0.875rem;
+   }
+   
+   .startButtonWrapper {
+    margin-top: 2rem;
+    text-align: center;
+   }
+   
+   .startButton {
+    background: #dc2626;
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+   }
+   
+   .title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #fff;
+   }
+   
+   @media (max-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+   }
+   
+   @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .mainCard {
+      margin: 0.5rem;
+      padding: 1rem;
+    }
+   }

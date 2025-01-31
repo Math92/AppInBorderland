@@ -1,122 +1,67 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useGame } from '../../context/GameContext.jsx';
+// AceSpades.jsx
+import { useState, useEffect } from 'react';
+import { useGame } from '../../context/GameContext';
+import { SPADE_GAMES } from '../../data/types';
+import styles from './AceSpades.module.css';
 
 const AceSpades = () => {
-  const { state, updateRoundResults, startNextRound } = useGame();
+  const { updateRoundResults } = useGame();
+  const gameConfig = SPADE_GAMES.ACE;
   
-  // Estados locales
   const [clicks, setClicks] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(20); // Reducido a 20 segundos
-  const [gameStatus, setGameStatus] = useState('PLAYING');
-  const [clickRate, setClickRate] = useState(0);
-  const [startTime] = useState(Date.now());
+  const [timeLeft, setTimeLeft] = useState(15);
+  const [isFinished, setIsFinished] = useState(false);
 
-  // Función para calcular la velocidad de clicks
-  const calculateClickRate = useCallback(() => {
-    const elapsedTimeInSeconds = (Date.now() - startTime) / 1000;
-    return elapsedTimeInSeconds > 0 ? (clicks / elapsedTimeInSeconds).toFixed(1) : 0;
-  }, [clicks, startTime]);
-
-  // Timer principal del juego que corre independientemente
   useEffect(() => {
-    const interval = setInterval(() => {
+    const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 0) {
-          clearInterval(interval);
-          setGameStatus('FINISHED');
-          
-          // Actualizar resultados finales
+          clearInterval(timer);
+          setIsFinished(true);
           updateRoundResults({
-            game: 'ACE_SPADES',
             score: clicks,
-            clickRate: calculateClickRate(),
-            success: clicks >= 50,
-            round: state.currentRound
+            success: clicks >= gameConfig.minScore
           });
-          
           return 0;
         }
         return prev - 1;
       });
-      
-      setClickRate(calculateClickRate());
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, [clicks, calculateClickRate, updateRoundResults, state.currentRound]);
+    return () => clearInterval(timer);
+  }, [clicks, updateRoundResults]);
 
-  // Manejar clicks
   const handleClick = () => {
-    if (gameStatus === 'PLAYING' && timeLeft > 0) {
-      setClicks(prev => prev + 1);
-    }
-  };
-
-  // Efectos visuales de fuerza
-  const getPunchEffect = () => {
-    if (clicks < 20) return 'bg-red-300';
-    if (clicks < 35) return 'bg-red-500';
-    return 'bg-red-700';
+    if (!isFinished) setClicks(prev => prev + 1);
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4">
-      <div className="mb-4 text-xl font-bold text-center">
-        Ronda {state.currentRound} de {state.maxRounds} | 
-        A♠ Golpes Rápidos | Tiempo: {timeLeft}s | 
-        Golpes: {clicks} | Velocidad: {clickRate} g/s
+    <div className={styles.container}>
+      <div className={styles.header}>
+        {gameConfig.name} | Tiempo: {timeLeft}s | Golpes: {clicks}
       </div>
 
-      {gameStatus === 'PLAYING' && (
-        <div className="flex flex-col items-center">
+      {!isFinished ? (
+        <div className={styles.gameArea}>
           <button
             onClick={handleClick}
-            className={`
-              w-48 h-48 rounded-full 
-              ${getPunchEffect()}
-              transform transition-all duration-100 active:scale-95
-              hover:shadow-lg focus:outline-none
-              flex items-center justify-center text-white font-bold text-2xl
-            `}
+            className={styles.clickButton}
           >
             ¡GOLPEA!
           </button>
 
-          <div className="mt-4 w-full max-w-md bg-gray-700 h-4 rounded-full overflow-hidden">
+          <div className={styles.progressBar}>
             <div 
-              className="h-full bg-red-500 transition-all duration-200"
-              style={{ width: `${(clicks / 50) * 100}%` }}
+              className={styles.progress}
+              style={{ width: `${(clicks / gameConfig.minScore) * 100}%` }}
             />
           </div>
-
-          <div className="mt-2 text-sm text-gray-300">
-            Objetivo: 50 golpes
-          </div>
         </div>
-      )}
-
-      {gameStatus === 'FINISHED' && (
-        <div className="text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            {clicks >= 50 ? '¡Victoria!' : 'Necesitas más entrenamiento'}
-          </h2>
-          <div className="space-y-2">
-            <p>Total de golpes: {clicks}</p>
-            <p>Velocidad final: {clickRate} golpes/segundo</p>
-            <p>
-              Estado: {clicks >= 50 ? (
-                <span className="text-green-500">Superado</span>
-              ) : (
-                <span className="text-red-500">No alcanzado</span>
-              )}
-            </p>
-            <button
-              onClick={startNextRound}
-              className="mt-4 bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg"
-            >
-              {state.currentRound < state.maxRounds ? 'Siguiente Ronda' : 'Ver Resultados'}
-            </button>
-          </div>
+      ) : (
+        <div className={styles.results}>
+          <h2>{clicks >= gameConfig.minScore ? '¡Victoria!' : 'Derrota'}</h2>
+          <p>Total de golpes: {clicks}</p>
+          <p>Objetivo: {gameConfig.minScore}</p>
         </div>
       )}
     </div>

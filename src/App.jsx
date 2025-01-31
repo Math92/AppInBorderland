@@ -1,12 +1,11 @@
-import { GameProvider } from './context/GameContext.jsx';
-import GameManager from './components/game/GameManager.jsx';
+// App.jsx
+import { GameProvider } from './context/GameContext';
+import GameManager from './components/game/GameManager';
 
-const App = () => {
-  return (
-    <GameProvider>
-      <GameManager />
-    </GameProvider>
-  );
-};
+const App = () => (
+  <GameProvider>
+    <GameManager />
+  </GameProvider>
+);
 
 export default App;
