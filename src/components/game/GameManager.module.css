@@ -1,40 +1,161 @@
-.container {
-    min-height: 100vh;
-    background: #111827;
-    color: white;
-   }
-   
-   .gameCard {
-    max-width: 64rem;
-    margin: 0 auto;
-    padding: 1.5rem;
-   }
-   
-   .unavailableGame {
-    text-align: center;
-    padding: 1rem;
+/* GameManager.module.css */
+.resultsContainer {
     background: #1f2937;
+    padding: 2rem;
     border-radius: 0.5rem;
-   }
-   
-   .resultsCard {
-    max-width: 42rem;
+    max-width: 48rem;
     margin: 0 auto;
+  }
+  
+  .resultsTitle {
     text-align: center;
-    padding: 1.5rem;
-   }
-   
-   .resultItem {
-    background: #1f2937;
-    padding: 1rem;
-    border-radius: 0.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem;
+    color: #9ca3af;
     margin-bottom: 1rem;
-   }
-   
-   .success {
-    color: #34d399;
-   }
-   
-   .failure {
-    color: #f87171;
-   }
+  }
+  
+  /* Estilos para resultados del jugador */
+  .playerResults {
+    margin-bottom: 2rem;
+  }
+  
+  .resultCard {
+    background: #374151;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+  }
+  
+  .resultStatus {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .success .resultStatus {
+    color: #10b981;
+  }
+  
+  .failure .resultStatus {
+    color: #ef4444;
+  }
+  
+  .score {
+    font-size: 1.25rem;
+    color: #d1d5db;
+  }
+  
+  /* Estilos para personajes principales */
+  .charactersGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .characterCard {
+    background: #374151;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+  }
+  
+  .characterName {
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  
+  .characterStatus {
+    font-size: 0.875rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .survived {
+    color: #10b981;
+  }
+  
+  .died {
+    color: #ef4444;
+  }
+  
+  .characterScore {
+    color: #9ca3af;
+    font-size: 0.875rem;
+  }
+  
+  /* Estilos para resumen de NPCs */
+  .npcSummary {
+    margin-bottom: 2rem;
+  }
+  
+  .npcStats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  
+  .statCard {
+    background: #374151;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+  }
+  
+  .statValue {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 0.25rem;
+  }
+  
+  .statLabel {
+    color: #9ca3af;
+    font-size: 0.875rem;
+  }
+  
+  /* Botón de continuar */
+  .continueButton {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 2rem auto 0;
+    padding: 1rem;
+    background: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .continueButton:hover {
+    background: #b91c1c;
+    transform: translateY(-2px);
+  }
+  
+  @media (max-width: 640px) {
+    .resultsContainer {
+      padding: 1rem;
+    }
+  
+    .npcStats {
+      grid-template-columns: 1fr;
+    }
+  
+    .charactersGrid {
+      grid-template-columns: 1fr;
+    }
+  }

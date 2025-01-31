@@ -1,27 +1,31 @@
 // AceSpades.jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useGame } from '../../context/GameContext';
-import { SPADE_GAMES } from '../../data/types';
+import { SPADE_GAMES } from '../types.js';
 import styles from './AceSpades.module.css';
 
 const AceSpades = () => {
-  const { updateRoundResults } = useGame();
+  const { updateResults } = useGame();
   const gameConfig = SPADE_GAMES.ACE;
   
   const [clicks, setClicks] = useState(0);
   const [timeLeft, setTimeLeft] = useState(15);
   const [isFinished, setIsFinished] = useState(false);
 
+  const handleGameEnd = useCallback(() => {
+    setIsFinished(true);
+    updateResults({
+      score: clicks,
+      success: clicks >= gameConfig.minScore
+    });
+  }, [clicks, updateResults, gameConfig.minScore]);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 0) {
           clearInterval(timer);
-          setIsFinished(true);
-          updateRoundResults({
-            score: clicks,
-            success: clicks >= gameConfig.minScore
-          });
+          handleGameEnd();
           return 0;
         }
         return prev - 1;
@@ -29,10 +33,12 @@ const AceSpades = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [clicks, updateRoundResults]);
+  }, [handleGameEnd]);
 
   const handleClick = () => {
-    if (!isFinished) setClicks(prev => prev + 1);
+    if (!isFinished) {
+      setClicks(prev => prev + 1);
+    }
   };
 
   return (
@@ -57,13 +63,7 @@ const AceSpades = () => {
             />
           </div>
         </div>
-      ) : (
-        <div className={styles.results}>
-          <h2>{clicks >= gameConfig.minScore ? '¡Victoria!' : 'Derrota'}</h2>
-          <p>Total de golpes: {clicks}</p>
-          <p>Objetivo: {gameConfig.minScore}</p>
-        </div>
-      )}
+      ) : null}
     </div>
   );
 };

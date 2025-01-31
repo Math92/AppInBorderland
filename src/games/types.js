@@ -24,12 +24,4 @@ export const SPADE_GAMES = {
       maxTime: 30,
       minCombos: 5
     },
-    FOUR: {
-      id: 'four-spades',
-      name: 'Resistencia Extrema',
-      description: 'Alterna clicks rápidos con mantener presionado',
-      difficulty: 4,
-      maxTime: 90,
-      minScore: 100
-    }
   };
