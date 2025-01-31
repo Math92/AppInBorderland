@@ -17,7 +17,7 @@ const actionTypes = {
   RESET_GAME: 'RESET_GAME'
 };
 
-const IMPLEMENTED_CARDS = ranks.slice(0, 3).map(rank => ({
+const IMPLEMENTED_CARDS = ranks.slice(0, 4).map(rank => ({
   rank,
   suit: 'spades'
 }));

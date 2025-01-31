@@ -13,7 +13,7 @@ const TwoSpades = () => {
   
   const [power, setPower] = useState(0);
   const [isHolding, setIsHolding] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(15);
+  const [timeLeft, setTimeLeft] = useState(gameConfig.maxTime);
   const [maxPower, setMaxPower] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [shouldUpdateResults, setShouldUpdateResults] = useState(false);

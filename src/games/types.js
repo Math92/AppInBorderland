@@ -13,7 +13,7 @@ export const SPADE_GAMES = {
       name: 'Mantén la Fuerza',
       description: 'Mantén presionada la barra espaciadora para acumular fuerza',
       difficulty: 2,
-      maxTime: 15,
+      maxTime: 10,
       minPower: 80 // porcentaje de fuerza necesario
     },
     THREE: {
@@ -24,4 +24,12 @@ export const SPADE_GAMES = {
       maxTime: 40,
       minCombos: 5
     },
+    FOUR: {
+      id: '4-spades',
+      name: 'Dispara a los Objetivos',
+      description: 'Pulsa en los objetivos que aparecen antes de que desaparezcan',
+      difficulty: 4,
+      maxTime: 30,
+      minTarget: 20
+    }
   };
