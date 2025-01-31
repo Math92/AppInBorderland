@@ -20,18 +20,20 @@ const GameStart = () => {
                   ? styles.selected 
                   : styles.unselected}`}
             >
-              <div className={styles.characterImageWrapper}>
-                <img
-                  src={"/api/placeholder/100/100"}
-                  alt={character.name}
-                  className={styles.characterAvatar}
+              <div className={styles.avatarContainer}>
+                <img 
+                  src={character.avatar}
+                  alt={`Avatar de ${character.name}`}
+                  className={styles.avatar}
                 />
               </div>
-              <h3 className={styles.characterName}>{character.name}</h3>
-              <p className={styles.description}>{character.description}</p>
-              <p className={styles.ability}>
-                Habilidad: {character.specialAbility}
-              </p>
+              <div className={styles.characterInfo}>
+                <h3 className={styles.characterName}>{character.name}</h3>
+                <p className={styles.description}>{character.description}</p>
+                <span className={styles.ability}>
+                  Habilidad: {character.specialAbility}
+                </span>
+              </div>
             </div>
           ))}
         </div>
@@ -40,7 +42,8 @@ const GameStart = () => {
           <div className={styles.startButtonWrapper}>
             <button
               onClick={startGame}
-              className={styles.startButton}>
+              className={styles.startButton}
+            >
               Comenzar Juego
             </button>
           </div>
