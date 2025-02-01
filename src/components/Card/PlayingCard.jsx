@@ -8,7 +8,8 @@ const cardMap = {
   '3-spades': '3S',
   'four-spades': '4S',
   'A-hearts': 'AH',
-  'ace-hearts': 'AH'
+  'ace-hearts': 'AH',
+  '2-hearts': '2H'
 };
 
 const PlayingCard = ({ cardId }) => {

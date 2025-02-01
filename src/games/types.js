@@ -46,5 +46,15 @@ export const HEART_GAMES = {
     questionsPerRound: 2,
     scoreMultiplier: 10,
     transitionDelay: 2000
+  },
+  TWO: {
+    id: '2-hearts',
+    name: 'Dilema del Prisionero',
+    description: 'Pon a prueba tu confianza y lealtad en situaciones moralmente complejas',
+    difficulty: 2,
+    maxTime: 30,
+    minScore: 40, // El puntaje mínimo para considerar "éxito"
+    decisionTime: 30, // Tiempo para tomar la decisión
+    transitionDelay: 5000 // Tiempo para mostrar consecuencias
   }
 };
