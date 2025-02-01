@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { useGame } from '../../context/GameContext';
 import styles from './ThreeHearts.module.css';
 import PlayingCard from '../../components/Card/PlayingCard';
-import imgHearts1 from '../../assets/images/3-hearts-1.jpg';
-import imgHearts2 from '../../assets/images/3-hearts-2.jpg';
+import imgHearts1 from '../../assets/public/images/3-hearts-1.jpg';
+import imgHearts2 from '../../assets/public/images/3-hearts-2.jpg';
 
 const gameConfig = {
   id: '3-hearts',
