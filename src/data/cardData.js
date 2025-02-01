@@ -6,7 +6,7 @@ export const suits = {
     },
     diamonds: {
       symbol: '♦',
-      type: 'PSYCHOLOGICAL',
+      type: 'INTELLIGENCE',
       description: 'Juegos de astucia y manipulación'
     },
     clubs: {
@@ -16,8 +16,8 @@ export const suits = {
     },
     spades: {
       symbol: '♠',
-      type: 'INTELLIGENCE',
-      description: 'Juegos de lógica y estrategia'
+      type: 'FORCE',
+      description: 'Juegos de destreza fisica'
     }
   };
   

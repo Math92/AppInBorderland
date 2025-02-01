@@ -70,3 +70,20 @@ export const HEART_GAMES = {
     feedbackDuration: 3000
   }
 };
+
+// Tipos de juegos de diamantes (Astucia y Destreza Mental)
+export const DIAMOND_GAMES = {
+  ACE: {
+    id: 'A-diamonds',
+    name: 'Secuencias Lógicas',
+    description: 'Resuelve patrones y secuencias numéricas',
+    difficulty: 1,
+    maxTime: 30,
+    minScore: 60,
+    sequencesPerRound: 2,
+    scorePerSequence: 50,
+    transitionDelay: 3000,
+    feedbackDuration: 3000,
+    hintPenalty: 10 // Penalización por usar pista
+  }
+}

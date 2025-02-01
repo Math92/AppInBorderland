@@ -1,0 +1,227 @@
+/* AceDiamonds.module.css */
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: #f0f9ff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .header {
+    font-size: 1.5rem;
+    color: #0369a1;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-bottom: 2px solid #bae6fd;
+    text-align: center;
+  }
+  
+  .sequenceContainer {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 15px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .pattern {
+    font-size: 2rem;
+    color: #0284c7;
+    text-align: center;
+    padding: 20px;
+    background: #f0f9ff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-family: monospace;
+    letter-spacing: 0.2em;
+  }
+  
+  .context {
+    font-size: 1.1rem;
+    color: #4a4a4a;
+    margin: 20px 0;
+    line-height: 1.6;
+    padding: 15px;
+    background: #f8fafc;
+    border-left: 4px solid #0284c7;
+    border-radius: 0 8px 8px 0;
+  }
+  
+  .timer {
+    font-size: 1.2rem;
+    color: #0369a1;
+    margin: 15px 0;
+    padding: 12px;
+    background: #e0f2fe;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  .pistaContainer {
+    margin: 15px 0;
+    text-align: center;
+  }
+  
+  .pistaButton {
+    background: #0ea5e9;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .pistaButton:hover:not(:disabled) {
+    background: #0284c7;
+  }
+  
+  .pistaButton:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+  }
+  
+  .pista {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f0f9ff;
+    border-radius: 6px;
+    color: #0369a1;
+    font-style: italic;
+  }
+  
+  .optionsGrid {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    margin-top: 20px;
+  }
+  
+  .option {
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background: #e0f2fe;
+    color: #0c4a6e;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  
+  .option:hover:not(:disabled) {
+    background: #bae6fd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .option:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .correct {
+    background: #dcfce7 !important;
+    color: #166534;
+    border: 2px solid #22c55e;
+  }
+  
+  .incorrect {
+    background: #fee2e2 !important;
+    color: #991b1b;
+    border: 2px solid #ef4444;
+  }
+  
+  .feedbackContainer {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .feedbackContainer h3 {
+    color: #0369a1;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+  }
+  
+  .selectedValue {
+    font-size: 1.2rem;
+    color: #1a1a1a;
+    margin: 15px 0;
+  }
+  
+  .result {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 15px 0;
+  }
+  
+  .explanation {
+    color: #4a4a4a;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 8px;
+  }
+  
+  .timeOut {
+    color: #991b1b;
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+  
+  .results {
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .results h3 {
+    color: #0369a1;
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+  }
+  
+  .finalScore {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 8px;
+    display: inline-block;
+  }
+  
+  .feedback {
+    color: #1a1a1a;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-top: 20px;
+    font-style: italic;
+    padding: 15px;
+    background: #e0f2fe;
+    border-radius: 8px;
+  }
+  
+  @media (max-width: 640px) {
+    .container {
+      padding: 15px;
+    }
+  
+    .optionsGrid {
+      grid-template-columns: 1fr;
+    }
+  
+    .feedbackContainer,
+    .results {
+      padding: 20px;
+    }
+  }
