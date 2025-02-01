@@ -112,6 +112,15 @@ const AceHearts = () => {
         setTimeLeft(prev => prev - 1);
       }, 1000);
       return () => clearInterval(timer);
+    } else if (timeLeft <= 0 && showing === 'SITUATION') {
+      // Cuando el tiempo llega a 0, aplicamos una penalización
+      const timeoutDecision = {
+        texto: "Sin decisión - Tiempo agotado",
+        impacto: { moral: -50, supervivencia: -30, lealtad: -40, karma: -40 },
+        consecuencia: "Tu indecisión ha llevado a consecuencias negativas.",
+        timeLeft: 0
+      };
+      handleDecision(timeoutDecision);
     }
   }, [timeLeft, showing]);
 
