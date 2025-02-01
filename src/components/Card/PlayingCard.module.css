@@ -1,24 +1,44 @@
 /* PlayingCard.module.css */
 .cardContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 1rem;
-    perspective: 1000px;
-    width: 100%;
-  }
-  
-  .cardImage {
-    width: 120px;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    transform-style: preserve-3d;
-  }
-  
-  .cardImage:hover {
-    transform: translateY(-5px) rotateY(10deg);
-    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+  max-width: 80px; /* Tamaño base para cartas normales */
+  max-height: 112px; /* Proporción 2.5:3.5 */
+}
+
+.cardImage:hover {
+  transform: translateY(-5px) rotateY(10deg);
+  box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+/* Tamaños de carta */
+.small .cardImage {
+  max-width: 60px;
+  max-height: 84px;
+}
+
+.medium .cardImage {
+  max-width: 80px;
+  max-height: 112px;
+}
+
+.large .cardImage {
+  max-width: 120px;
+  max-height: 168px;
+}

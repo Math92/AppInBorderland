@@ -1,5 +1,7 @@
-import { useEffect } from 'react';
+// GameManager.jsx
+import { useEffect, useState } from 'react';
 import { useGame } from '../../context/GameContext';
+import { db } from '../../firebase';
 import styles from './GameManager.module.css';
 import GameStart from './GameStart';
 import AceSpades from '../../games/spades/AceSpades';
@@ -11,10 +13,11 @@ import TwoHearts from '../../games/hearts/TwoHearts';
 import ThreeHearts from '../../games/hearts/ThreeHearts';
 import AceDiamonds from '../../games/diamonds/AceDiamonds';
 import TwoDiamonds from '../../games/diamonds/TwoDiamonds';
+import PlayingCard from '../Card/PlayingCard';
 
 const GameManager = () => {
-  // Obtenemos state y dispatch del contexto a través de useGame
   const { state, startGame, resetGame } = useGame();
+  const [cardEarned, setCardEarned] = useState(false);
 
   useEffect(() => {
     if (state.gameState === 'PLAYING' && !state.currentCard) {
@@ -22,10 +25,59 @@ const GameManager = () => {
     }
   }, [state.gameState, state.currentCard, startGame]);
 
-  const renderCurrentGame = () => {
-    if (!state.currentCard) {
-      return null;
+  // Función para actualizar las cartas del usuario
+  const updateUserCards = async (gameResult) => {
+    if (gameResult.success && state.currentCard) {
+      try {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser?.id) return;
+
+        const userDoc = await db.collection('users').doc(currentUser.id).get();
+        if (!userDoc) return;
+
+        const [rank, suit] = state.currentCard.id.split('-');
+        const currentCards = userDoc.cards || {};
+
+        // Verificar si ya tiene la carta
+        if (currentCards[suit]?.[rank]) {
+          return;
+        }
+
+        // Actualizar las cartas
+        const updatedCards = {
+          ...currentCards,
+          [suit]: {
+            ...(currentCards[suit] || {}),
+            [rank]: true
+          }
+        };
+
+        // Actualizar en la base de datos
+        await db.collection('users').doc(currentUser.id).update({
+          cards: updatedCards
+        });
+
+        // Actualizar localStorage
+        localStorage.setItem('currentUser', JSON.stringify({
+          ...currentUser,
+          cards: updatedCards
+        }));
+
+        setCardEarned(true);
+      } catch (error) {
+        console.error('Error actualizando cartas:', error);
+      }
     }
+  };
+
+  useEffect(() => {
+    if (state.gameState === 'FINISHED' && state.currentGameResults) {
+      updateUserCards(state.currentGameResults);
+    }
+  }, [state.gameState, state.currentGameResults]);
+
+  const renderCurrentGame = () => {
+    if (!state.currentCard) return null;
 
     const gameMap = {
       'A-spades': AceSpades,
@@ -40,96 +92,74 @@ const GameManager = () => {
     };
 
     const GameComponent = gameMap[state.currentCard.id];
-
     return GameComponent ? <GameComponent /> : (
       <div className={styles.unavailableGame}>Juego no disponible</div>
     );
   };
 
-  const renderResults = () => {
-    if (!state.currentGameResults || !state.allPlayersResults) return null;
+  // GameManager.jsx - renderResults function
+const renderResults = () => {
+  if (!state.currentGameResults) return null;
 
-    const mainCharacters = state.allPlayersResults.filter(player => player.isMainCharacter);
-    const npcs = state.allPlayersResults.filter(player => !player.isMainCharacter);
-    const survivingNPCs = npcs.filter(npc => npc.score >= 50).length;
+  return (
+    <div className={styles.resultsContainer}>
+      <h2 className={styles.resultsTitle}>Resultados del Juego</h2>
 
-    return (
-      <div className={styles.resultsContainer}>
-        <h2 className={styles.resultsTitle}>Resultados del Juego</h2>
+      {cardEarned && (
+        <div className={styles.cardEarnedMessage}>
+          ¡Has obtenido una nueva carta para tu colección! 🎴
+        </div>
+      )}
 
-        {/* Resultado del jugador */}
-        <div className={styles.playerResults}>
-          <h3 className={styles.sectionTitle}>Tu Resultado</h3>
-          <div className={styles.characterCard}>
-            <img
-              src={state.selectedCharacter.avatar}
-              alt={`Avatar de ${state.selectedCharacter.name}`}
-              className={styles.characterAvatar}
-            />
-            <div className={styles.characterName}>{state.selectedCharacter.name}</div>
-            <div className={`${styles.resultCard} ${state.currentGameResults.success ? styles.success : styles.failure}`}>
-              <div className={styles.resultStatus}>
-                {state.currentGameResults.success ? '¡SOBREVIVISTE!' : 'GAME OVER'}
-              </div>
-              <div className={styles.score}>
-                Puntuación: {state.currentGameResults.score}
-              </div>
+      <div className={styles.playerResults}>
+        <h3 className={styles.sectionTitle}>Tu Resultado</h3>
+        <div className={styles.characterCard}>
+          <img
+            src={state.selectedCharacter.avatar}
+            alt={`Avatar de ${state.selectedCharacter.name}`}
+            className={styles.characterAvatar}
+          />
+          <div className={styles.characterName}>
+            {state.selectedCharacter.name}
+          </div>
+          <div 
+            className={`${styles.resultCard} ${
+              state.currentGameResults.success ? styles.success : styles.failure
+            }`}
+          >
+            <div className={styles.resultStatus}>
+              {state.currentGameResults.success ? (
+                <>¡SOBREVIVISTE! <span role="img" aria-label="victoria">🎉</span></>
+              ) : (
+                <>GAME OVER <span role="img" aria-label="derrota">💀</span></>
+              )}
+            </div>
+            <div className={styles.score}>
+              Puntuación: {state.currentGameResults.score}
             </div>
           </div>
         </div>
-
-        {/* Resultados de personajes principales */}
-        <div className={styles.mainCharactersResults}>
-        <h3 className={styles.sectionTitle}>Personajes Principales</h3>
-        <div className={styles.charactersGrid}>
-          {mainCharacters.map(char => (
-            <div key={char.id} className={styles.characterCard}>
-              <img 
-                src={char.avatar}
-                alt={`Avatar de ${char.name}`}
-                className={styles.characterAvatar}
-              />
-              <div className={styles.characterName}>{char.name}</div>
-              <div className={`${styles.characterStatus} ${char.score >= 50 ? styles.survived : styles.died}`}>
-                {char.score >= 50 ? 'SOBREVIVIÓ' : 'ELIMINADO'}
-              </div>
-              <div className={styles.characterScore}>
-                Puntuación: {char.score}
-              </div>
-            </div>
-          ))}
-        </div>
-        </div>
-
-        {/* Resumen de NPCs */}
-        <div className={styles.npcSummary}>
-          <h3 className={styles.sectionTitle}>Otros Jugadores</h3>
-          <div className={styles.npcStats}>
-            <div className={styles.statCard}>
-              <div className={styles.statValue}>{survivingNPCs}</div>
-              <div className={styles.statLabel}>Sobrevivientes</div>
-            </div>
-            <div className={styles.statCard}>
-              <div className={styles.statValue}>{npcs.length - survivingNPCs}</div>
-              <div className={styles.statLabel}>Eliminados</div>
-            </div>
-            <div className={styles.statCard}>
-              <div className={styles.statValue}>{((survivingNPCs / npcs.length) * 100).toFixed(1)}%</div>
-              <div className={styles.statLabel}>Tasa de Supervivencia</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Botón para continuar */}
-        <button
-          onClick={resetGame}
-          className={styles.continueButton}
-        >
-          Siguiente Ronda
-        </button>
       </div>
-    );
-  };
+
+      {state.currentGameResults.success && state.currentCard && (
+        <div className={styles.earnedCard}>
+          <h3 className={styles.sectionTitle}>Carta Obtenida</h3>
+          <PlayingCard cardId={state.currentCard.id} size="large" />
+        </div>
+      )}
+
+      <button
+        onClick={() => {
+          setCardEarned(false);
+          resetGame();
+        }}
+        className={styles.continueButton}
+      >
+        Siguiente Ronda
+      </button>
+    </div>
+  );
+};
 
   return (
     <div className={styles.container}>
