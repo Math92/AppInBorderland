@@ -96,5 +96,20 @@ export const DIAMOND_GAMES = {
     baseScore: 30,
     maxLevels: 2,
     patternShowTime: 4000, // 4 segundos para mostrar el patrón
-  }
+  },
+  THREE: {
+    id: '3-diamonds',
+    name: 'Laberinto Mental',
+    description: 'Navega por un laberinto generado aleatoriamente antes de que se agote el tiempo',
+    difficulty: 3,
+    maxTime: 30, // Tiempo total en segundos
+    mazeConfig: {
+    size: 8
+    },
+    timeBonus: {
+    threshold: 15, // Segundos restantes para obtener bonificación
+    points: 50 // Puntos extra por tiempo restante
+    },
+    baseScore: 100 // Puntuación base por completar
+    }
 }
