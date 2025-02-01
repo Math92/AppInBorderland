@@ -1,104 +1,166 @@
-// src/firebase.js
-class LocalDB {
-    constructor() {
-        this.initializeCollections();
+// firebase.js
+import { initializeApp } from "firebase/app";
+import { 
+  getDatabase, 
+  ref, 
+  get, 
+  set, 
+  update, 
+  query, 
+  orderByChild, 
+  equalTo, 
+  push
+} from "firebase/database";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCtQxoVL-kQZvKrwFb8iZpH3nr-2qdXvA8",
+  authDomain: "appinborderland.firebaseapp.com",
+  databaseURL: "https://appinborderland-default-rtdb.firebaseio.com",
+  projectId: "appinborderland",
+  storageBucket: "appinborderland.firebasestorage.app",
+  messagingSenderId: "422110442173",
+  appId: "1:422110442173:web:4c9d889948a9bb9c37fdd4"
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+class FirebaseDB {
+  async createUser(userData) {
+    try {
+      const existingUser = await this.getUserByEmail(userData.email);
+      if (existingUser) {
+        throw new Error('El email ya está registrado');
+      }
+
+      const usersRef = ref(database, 'users');
+      const newUserRef = push(usersRef);
+      const userId = newUserRef.key;
+      const timestamp = new Date().toISOString();
+      
+      const newUser = {
+        id: userId,
+        email: userData.email,
+        password: userData.password,
+        cards: {
+          spades: {
+            "A": false, "2": false, "3": false, "4": false,
+            "5": false, "6": false, "7": false, "8": false,
+            "9": false, "10": false, "J": false, "Q": false, "K": false
+          },
+          hearts: {
+            "A": false, "2": false, "3": false, "4": false,
+            "5": false, "6": false, "7": false, "8": false,
+            "9": false, "10": false, "J": false, "Q": false, "K": false
+          },
+          diamonds: {
+            "A": false, "2": false, "3": false, "4": false,
+            "5": false, "6": false, "7": false, "8": false,
+            "9": false, "10": false, "J": false, "Q": false, "K": false
+          },
+          clubs: {
+            "A": false, "2": false, "3": false, "4": false,
+            "5": false, "6": false, "7": false, "8": false,
+            "9": false, "10": false, "J": false, "Q": false, "K": false
+          }
+        },
+        createdAt: timestamp,
+        lastLogin: timestamp,
+        gamesPlayed: 0,
+        gamesWon: 0,
+        totalCards: 0
+      };
+
+      await set(newUserRef, newUser);
+      return { id: userId };
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
     }
- 
-    initializeCollections() {
-        const collections = ['users'];
-        collections.forEach(collection => {
-            if (!localStorage.getItem(collection)) {
-                localStorage.setItem(collection, JSON.stringify([]));
-            }
-        });
-    
-        // Verificar si el usuario de prueba ya existe
-        const users = JSON.parse(localStorage.getItem('users'));
-        const testUserExists = users.some(user => user.email === 'test@test.com');
-        
-        if (users.length === 0 && !testUserExists) {
-            const defaultUser = {
-                id: '1',
-                email: 'test@test.com',
-                password: '12345',
-                cards: {
-                    clubs: {},
-                    diamonds: {},
-                    hearts: {},
-                    spades: {}
-                }
-            };
-            localStorage.setItem('users', JSON.stringify([defaultUser]));
+  }
+
+  async getUserByEmail(email) {
+    try {
+      const usersRef = ref(database, 'users');
+      const userQuery = query(usersRef, orderByChild('email'), equalTo(email));
+      const snapshot = await get(userQuery);
+      
+      if (!snapshot.exists()) {
+        return null;
+      }
+
+      let user = null;
+      snapshot.forEach((childSnapshot) => {
+        user = { id: childSnapshot.key, ...childSnapshot.val() };
+      });
+
+      return user;
+    } catch (error) {
+      console.error("Error getting user:", error);
+      throw error;
+    }
+  }
+
+  async updateUserCards(userId, cards) {
+    try {
+      const userRef = ref(database, `users/${userId}`);
+      const userSnapshot = await get(userRef);
+      
+      if (!userSnapshot.exists()) {
+        throw new Error('Usuario no encontrado');
+      }
+
+      const totalCards = Object.values(cards).reduce((total, suit) => {
+        return total + Object.values(suit).filter(card => card === true).length;
+      }, 0);
+
+      await update(userRef, { 
+        cards,
+        totalCards,
+        lastUpdated: new Date().toISOString()
+      });
+
+      return true;
+    } catch (error) {
+      console.error("Error updating cards:", error);
+      throw error;
+    }
+  }
+
+  collection(name) {
+    return {
+      where: (field, operator, value) => ({
+        get: async () => {
+          if (name === 'users' && field === 'email') {
+            const user = await this.getUserByEmail(value);
+            return user ? [user] : [];
+          }
+          return [];
         }
-    }
- 
-    collection(name) {
-        return {
-            add: async (data) => {
-                const items = JSON.parse(localStorage.getItem(name) || '[]');
-                const newItem = { 
-                    ...data, 
-                    id: Date.now().toString(36) + Math.random().toString(36).substr(2) 
-                };
-                items.push(newItem);
-                localStorage.setItem(name, JSON.stringify(items));
-                return { id: newItem.id };
-            },
+      }),
 
-            get: async () => {
-                return JSON.parse(localStorage.getItem(name) || '[]');
-            },
+      add: async (data) => {
+        if (name === 'users') {
+          return await this.createUser(data);
+        }
+        throw new Error('Collection not supported');
+      },
 
-            where: (field, operator, value) => {
-                return {
-                    get: async () => {
-                        const items = JSON.parse(localStorage.getItem(name) || '[]');
-                        return items.filter(item => {
-                            switch (operator) {
-                                case '==':
-                                    return item[field] === value;
-                                case '>=':
-                                    return item[field] >= value;
-                                case '<=':
-                                    return item[field] <= value;
-                                case '!=':
-                                    return item[field] !== value;
-                                case 'in':
-                                    return value.includes(item[field]);
-                                default:
-                                    return true;
-                            }
-                        });
-                    }
-                };
-            },
-
-            doc: (id) => ({
-                get: async () => {
-                    const items = JSON.parse(localStorage.getItem(name) || '[]');
-                    const item = items.find(item => item.id === id);
-                    return item || null;
-                },
-
-                update: async (data) => {
-                    const items = JSON.parse(localStorage.getItem(name) || '[]');
-                    const index = items.findIndex(item => item.id === id);
-                    if (index !== -1) {
-                        items[index] = { ...items[index], ...data };
-                        localStorage.setItem(name, JSON.stringify(items));
-                    }
-                    return true;
-                },
-
-                delete: async () => {
-                    const items = JSON.parse(localStorage.getItem(name) || '[]');
-                    const filtered = items.filter(item => item.id !== id);
-                    localStorage.setItem(name, JSON.stringify(filtered));
-                    return true;
-                }
-            })
-        };
-    }
+      doc: (id) => ({
+        get: async () => {
+          const snapshot = await get(ref(database, `${name}/${id}`));
+          return snapshot.val();
+        },
+        update: async (data) => {
+          if (data.cards) {
+            return await this.updateUserCards(id, data.cards);
+          }
+          await update(ref(database, `${name}/${id}`), data);
+          return true;
+        }
+      })
+    };
+  }
 }
- 
-export const db = new LocalDB();
+
+export const db = new FirebaseDB();
