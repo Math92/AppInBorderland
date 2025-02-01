@@ -43,6 +43,7 @@ const generateNPCResults = (currentCard, mainPlayers, selectedCharacter) => {
     .map(char => ({
       id: char.id,
       name: char.name,
+      avatar: char.avatar,
       score: Math.floor(Math.random() * 100),
       isMainCharacter: true
     }));

@@ -93,7 +93,14 @@
     color: #9ca3af;
     font-size: 0.875rem;
   }
-  
+
+  .characterAvatar {
+    width: 50%; /* Ocupa todo el ancho del contenedor */
+    height: 50%;
+
+  }
+
+
   /* Estilos para resumen de NPCs */
   .npcSummary {
     margin-bottom: 2rem;

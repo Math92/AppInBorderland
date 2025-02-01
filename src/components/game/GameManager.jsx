@@ -30,7 +30,7 @@ const GameManager = () => {
     };
 
     const GameComponent = gameMap[state.currentCard.id];
-    
+
     return GameComponent ? <GameComponent /> : (
       <div className={styles.unavailableGame}>Juego no disponible</div>
     );
@@ -46,36 +46,49 @@ const GameManager = () => {
     return (
       <div className={styles.resultsContainer}>
         <h2 className={styles.resultsTitle}>Resultados del Juego</h2>
-        
+
         {/* Resultado del jugador */}
         <div className={styles.playerResults}>
           <h3 className={styles.sectionTitle}>Tu Resultado</h3>
-          <div className={`${styles.resultCard} ${state.currentGameResults.success ? styles.success : styles.failure}`}>
-            <div className={styles.resultStatus}>
-              {state.currentGameResults.success ? '¡SOBREVIVISTE!' : 'GAME OVER'}
-            </div>
-            <div className={styles.score}>
-              Puntuación: {state.currentGameResults.score}
+          <div className={styles.characterCard}>
+            <img
+              src={state.selectedCharacter.avatar}
+              alt={`Avatar de ${state.selectedCharacter.name}`}
+              className={styles.characterAvatar}
+            />
+            <div className={styles.characterName}>{state.selectedCharacter.name}</div>
+            <div className={`${styles.resultCard} ${state.currentGameResults.success ? styles.success : styles.failure}`}>
+              <div className={styles.resultStatus}>
+                {state.currentGameResults.success ? '¡SOBREVIVISTE!' : 'GAME OVER'}
+              </div>
+              <div className={styles.score}>
+                Puntuación: {state.currentGameResults.score}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Resultados de personajes principales */}
         <div className={styles.mainCharactersResults}>
-          <h3 className={styles.sectionTitle}>Personajes Principales</h3>
-          <div className={styles.charactersGrid}>
-            {mainCharacters.map(char => (
-              <div key={char.id} className={styles.characterCard}>
-                <div className={styles.characterName}>{char.name}</div>
-                <div className={`${styles.characterStatus} ${char.score >= 50 ? styles.survived : styles.died}`}>
-                  {char.score >= 50 ? 'SOBREVIVIÓ' : 'ELIMINADO'}
-                </div>
-                <div className={styles.characterScore}>
-                  Puntuación: {char.score}
-                </div>
+        <h3 className={styles.sectionTitle}>Personajes Principales</h3>
+        <div className={styles.charactersGrid}>
+          {mainCharacters.map(char => (
+            <div key={char.id} className={styles.characterCard}>
+              <img 
+                src={char.avatar}
+                alt={`Avatar de ${char.name}`}
+                className={styles.characterAvatar}
+              />
+              <div className={styles.characterName}>{char.name}</div>
+              <div className={`${styles.characterStatus} ${char.score >= 50 ? styles.survived : styles.died}`}>
+                {char.score >= 50 ? 'SOBREVIVIÓ' : 'ELIMINADO'}
               </div>
-            ))}
-          </div>
+              <div className={styles.characterScore}>
+                Puntuación: {char.score}
+              </div>
+            </div>
+          ))}
+        </div>
         </div>
 
         {/* Resumen de NPCs */}
