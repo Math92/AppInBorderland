@@ -6,11 +6,20 @@ const cardMap = {
   'A-spades': 'AS',
   '2-spades': '2S',
   '3-spades': '3S',
-  // Podemos agregar más cartas según se necesiten
+  'four-spades': '4S',
+  'A-hearts': 'AH',
+  'ace-hearts': 'AH'
 };
 
 const PlayingCard = ({ cardId }) => {
-  const cardCode = cardMap[cardId];
+  // Convertimos el ID a minúsculas para hacer la comparación más robusta
+  const normalizedId = cardId.toLowerCase();
+  const cardCode = cardMap[normalizedId] || cardMap[cardId];
+  
+  if (!cardCode) {
+    console.warn(`Card not found for id: ${cardId}`);
+    return null;
+  }
   
   return (
     <div className={styles.cardContainer}>

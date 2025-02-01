@@ -2,7 +2,7 @@ export const suits = {
     hearts: {
       symbol: '♥',
       type: 'PHYSICAL',
-      description: 'Juegos de resistencia física'
+      description: 'Juegos de psicologia y habilidades emocionales'
     },
     diamonds: {
       symbol: '♦',

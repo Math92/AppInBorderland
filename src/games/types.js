@@ -33,3 +33,18 @@ export const SPADE_GAMES = {
       minTarget: 20
     }
   };
+
+// Tipos de juegos de corazones (Inteligencia Emocional)
+export const HEART_GAMES = {
+  ACE: {
+    id: 'A-hearts',          // Mantenemos consistencia con GameManager
+    name: 'Prueba de Inteligencia Emocional',
+    description: 'Responde preguntas sobre situaciones emocionales',
+    difficulty: 1,
+    maxTime: 35,
+    minScore: 500,
+    questionsPerRound: 2,
+    scoreMultiplier: 10,
+    transitionDelay: 2000
+  }
+};

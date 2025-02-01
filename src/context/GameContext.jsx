@@ -17,22 +17,35 @@ const actionTypes = {
   RESET_GAME: 'RESET_GAME'
 };
 
-const IMPLEMENTED_CARDS = ranks.slice(0, 4).map(rank => ({
-  rank,
-  suit: 'spades'
-}));
+// Definimos las cartas implementadas usando el mismo patrón para todas
+const IMPLEMENTED_CARDS = [
+  // Cartas de picas (A, 2, 3, 4)
+  ...ranks.slice(0, 4).map(rank => ({
+    rank,
+    suit: 'spades'
+  })),
+  // Carta de corazones (solo A)
+  ...ranks.slice(0, 1).map(rank => ({
+    rank,
+    suit: 'hearts'
+  }))
+];
 
 const createInitialDeck = () => 
-  IMPLEMENTED_CARDS.map(({ rank, suit }) => ({
-    id: `${rank}-${suit}`,
-    rank,
-    suit,
-    symbol: suits[suit].symbol,
-    type: suits[suit].type,
-    description: suits[suit].description,
-    difficulty: calculateDifficulty(rank),
-    used: false
-  }));
+  IMPLEMENTED_CARDS.map(({ rank, suit }) => {
+    // Log para debug
+    console.log(`Creating card: ${rank}-${suit}`);
+    return {
+      id: `${rank}-${suit}`,
+      rank,
+      suit,
+      symbol: suits[suit].symbol,
+      type: suits[suit].type,
+      description: suits[suit].description,
+      difficulty: calculateDifficulty(rank),
+      used: false
+    };
+  });
 
 const generateNPCResults = (currentCard, mainPlayers, selectedCharacter) => {
   if (!currentCard || !mainPlayers || !selectedCharacter) return [];
@@ -82,14 +95,22 @@ const gameReducer = (state, action) => {
       const availableCards = state.deck.filter(card => !card.used);
       const randomCard = availableCards[Math.floor(Math.random() * availableCards.length)];
       
+      // Logs para debug
+      console.log('Available cards:', availableCards);
+      console.log('Selected card:', randomCard);
+      
       const npcResults = generateNPCResults(
         randomCard, 
         state.availableCharacters, 
         state.selectedCharacter
       );
 
+      // Actualizamos el estado marcando la carta como usada
       return {
         ...state,
+        deck: state.deck.map(card => 
+          card.id === randomCard.id ? { ...card, used: true } : card
+        ),
         currentCard: randomCard,
         allPlayersResults: npcResults
       };
