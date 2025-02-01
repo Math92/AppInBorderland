@@ -56,5 +56,17 @@ export const HEART_GAMES = {
     minScore: 40, // El puntaje mínimo para considerar "éxito"
     decisionTime: 30, // Tiempo para tomar la decisión
     transitionDelay: 5000 // Tiempo para mostrar consecuencias
+  },
+  THREE: {
+    id: '3-hearts',
+    name: 'Leer Emociones',
+    description: 'Identifica emociones verdaderas detrás de expresiones engañosas',
+    difficulty: 3,
+    maxTime: 20,
+    minScore: 60,
+    scenariosPerRound: 2,
+    scorePerScenario: 50,
+    transitionDelay: 3000,
+    feedbackDuration: 3000
   }
 };

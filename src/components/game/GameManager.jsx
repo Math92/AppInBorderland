@@ -8,6 +8,7 @@ import ThreeSpades from '../../games/spades/ThreeSpades';
 import FourSpades from '../../games/spades/FourSpades';
 import AceHearts from '../../games/hearts/AceHearts';
 import TwoHearts from '../../games/hearts/TwoHearts';
+import ThreeHearts from '../../games/hearts/ThreeHearts';
 
 const GameManager = () => {
   // Obtenemos state y dispatch del contexto a través de useGame
@@ -30,7 +31,8 @@ const GameManager = () => {
       '3-spades': ThreeSpades,
       '4-spades': FourSpades,
       'A-hearts': AceHearts,
-      '2-hearts': TwoHearts
+      '2-hearts': TwoHearts,
+      '3-hearts': ThreeHearts
     };
 
     const GameComponent = gameMap[state.currentCard.id];
