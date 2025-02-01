@@ -6,23 +6,43 @@ import styles from './TwoDiamonds.module.css';
 import PlayingCard from '../../components/Card/PlayingCard';
 
 const gameConfig = {
-    ...DIAMOND_GAMES.TWO,
-    maxLevels: 2,
-    maxTime: 15, // 15 segundos para responder
-    showPatternTime: 4000, // 4 segundos para mostrar el patrón
-  };
+  ...DIAMOND_GAMES.TWO,
+  maxLevels: 2,
+  maxTime: 15, // 15 seconds to respond
+  showPatternTime: 4000, // 4 seconds to show the pattern
+  maxAttempts: 2, // Maximum number of incorrect attempts allowed
+};
 
 const SYMBOLS = ['♠', '♣', '♥', '♦'];
 const COLORS = ['#2563eb', '#16a34a', '#dc2626', '#9333ea'];
 
 const generatePattern = (level) => {
-    // Asegurar que la longitud es al menos 2
-    const length = Math.max(2, level + 1);
-    return Array.from({ length }, () => ({
-      symbol: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
-      color: COLORS[Math.floor(Math.random() * COLORS.length)]
-    }));
-  };
+  // Ensure the length is at least 4 and increases with level
+  const length = Math.max(4, level + 3);
+  const selectedSymbols = [];
+  
+  // Ensure all 4 symbols are used at least once
+  const symbolsCopy = [...SYMBOLS];
+  while (symbolsCopy.length > 0) {
+    const symbolIndex = Math.floor(Math.random() * symbolsCopy.length);
+    const symbol = symbolsCopy.splice(symbolIndex, 1)[0];
+    selectedSymbols.push({
+      symbol,
+      color: COLORS[SYMBOLS.indexOf(symbol)]
+    });
+  }
+  
+  // Fill the rest of the pattern with random symbols
+  while (selectedSymbols.length < length) {
+    const randomSymbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+    selectedSymbols.push({
+      symbol: randomSymbol,
+      color: COLORS[SYMBOLS.indexOf(randomSymbol)]
+    });
+  }
+  
+  return selectedSymbols;
+};
 
 const TwoDiamonds = () => {
   const { updateResults } = useGame();
@@ -32,38 +52,40 @@ const TwoDiamonds = () => {
   const [playerInput, setPlayerInput] = useState([]);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(gameConfig.maxTime);
+  const [incorrectAttempts, setIncorrectAttempts] = useState(0);
 
   const startLevel = () => {
-    // Limpiar estado anterior
+    // Clear previous state
     setPlayerInput([]);
     setTimeLeft(gameConfig.maxTime);
+    setIncorrectAttempts(0);
     
-    // Generar nuevo patrón
-    const newPattern = generatePattern(currentLevel + 2);
+    // Generate new pattern
+    const newPattern = generatePattern(currentLevel);
     setPattern(newPattern);
     
-    // Iniciar secuencia
+    // Start sequence
     setGameState('SHOWING_PATTERN');
 
-    // Después del tiempo, ocultar patrón y permitir input
+    // After pattern time, hide pattern and allow input
     setTimeout(() => {
       setGameState('INPUT');
     }, gameConfig.showPatternTime);
   };
 
-  // Iniciar el juego
+  // Start the game
   useEffect(() => {
     if (gameState === 'READY') {
       startLevel();
     }
   }, [gameState]);
 
-   // Modificar el useEffect del timer
-useEffect(() => {
+  // Timer effect
+  useEffect(() => {
     let timer;
     
     if (gameState === 'INPUT') {
-      // Asegurarse que empezamos con el tiempo máximo
+      // Ensure we start with max time
       setTimeLeft(gameConfig.maxTime);
       
       timer = setInterval(() => {
@@ -82,11 +104,16 @@ useEffect(() => {
       }, 1000);
     }
   
-    // Limpiar el timer cuando cambie el estado o se desmonte el componente
+    // Clear timer when state changes or component unmounts
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [gameState, updateResults, score]); // Agregar las dependencias necesarias
+  }, [gameState, updateResults, score]);
+
+  const resetCurrentLevelAttempt = () => {
+    setPlayerInput([]);
+    setIncorrectAttempts(prev => prev + 1);
+  };
 
   const handleSymbolClick = (symbol, color) => {
     if (gameState !== 'INPUT') return;
@@ -94,40 +121,55 @@ useEffect(() => {
     const newInput = [...playerInput, { symbol, color }];
     setPlayerInput(newInput);
 
-    // Verificar si la secuencia es correcta hasta ahora
-    const isCorrect = newInput.every((input, index) => 
+    // Check if the current input matches the pattern up to the current length
+    const isCurrentInputCorrect = newInput.every((input, index) => 
       input.symbol === pattern[index].symbol && 
       input.color === pattern[index].color
     );
 
-    if (!isCorrect) {
-      // Secuencia incorrecta - Terminar juego
-      setGameState('FINISHED');
-      updateResults({
-        score,
-        success: false
-      });
-    } else if (newInput.length === pattern.length) {
-      // Secuencia completa correcta
-      const levelScore = Math.floor((timeLeft / gameConfig.maxTime) * 100);
-      const newScore = score + levelScore + gameConfig.baseScore;
-      setScore(newScore);
+    if (!isCurrentInputCorrect) {
+      // Incorrect sequence 
+      if (incorrectAttempts + 1 >= gameConfig.maxAttempts) {
+        // Too many incorrect attempts
+        setGameState('FINISHED');
+        updateResults({
+          score,
+          success: false
+        });
+        return;
+      }
+      
+      // Reset current attempt
+      resetCurrentLevelAttempt();
+      return;
+    }
 
-      if (currentLevel < gameConfig.maxLevels) {
-        // Avanzar al siguiente nivel
-        setCurrentLevel(prev => prev + 1);
-        setTimeout(() => {
-          startLevel();
-        }, 1500);
-      } else {
-        // Juego completado
-        setTimeout(() => {
-          setGameState('FINISHED');
-          updateResults({
-            score: newScore + (gameConfig.baseScore * currentLevel),
-            success: true
-          });
-        }, 1500);
+    // Check if the full sequence is complete and uses all symbols
+    if (newInput.length === pattern.length) {
+      const uniqueSymbols = new Set(newInput.map(item => item.symbol));
+      
+      if (uniqueSymbols.size === 4) {
+        // Correct sequence using all symbols
+        const levelScore = Math.floor((timeLeft / gameConfig.maxTime) * 100);
+        const newScore = score + levelScore + gameConfig.baseScore;
+        setScore(newScore);
+
+        if (currentLevel < gameConfig.maxLevels) {
+          // Move to next level
+          setCurrentLevel(prev => prev + 1);
+          setTimeout(() => {
+            startLevel();
+          }, 1500);
+        } else {
+          // Game completed
+          setTimeout(() => {
+            setGameState('FINISHED');
+            updateResults({
+              score: newScore + (gameConfig.baseScore * currentLevel),
+              success: true
+            });
+          }, 1500);
+        }
       }
     }
   };
@@ -184,27 +226,29 @@ useEffect(() => {
 
   const renderGameContent = () => {
     switch (gameState) {
-        case 'SHOWING_PATTERN':
-            return (
-              <>
-                <div className={styles.status}>
-                  <h3>¡Memoriza el patrón!</h3>
-                  <p>Tiempo de memorización: {gameConfig.showPatternTime / 1000}s</p>
-                </div>
-                {renderPattern()}
-              </>
-            );
-          case 'INPUT':
-            return (
-              <>
-                <div className={styles.status}>
-                  <h3>¡Reproduce el patrón!</h3>
-                  <p className={styles.timer}>Tiempo restante: {timeLeft}s</p>
-                </div>
-                {renderPlayerInput()}
-                {renderSymbolGrid()}
-              </>
-            );
+      case 'SHOWING_PATTERN':
+        return (
+          <>
+            <div className={styles.status}>
+              <h3>¡Memoriza el patrón!</h3>
+              <p>Tiempo de memorización: {gameConfig.showPatternTime / 1000}s</p>
+            </div>
+            {renderPattern()}
+          </>
+        );
+      case 'INPUT':
+        return (
+          <>
+            <div className={styles.status}>
+              <h3>¡Reproduce el patrón!</h3>
+              <p className={styles.timer}>Tiempo restante: {timeLeft}s</p>
+              <p>Usa los 4 símbolos en el orden correcto</p>
+              <p>Intentos restantes: {gameConfig.maxAttempts - incorrectAttempts}</p>
+            </div>
+            {renderPlayerInput()}
+            {renderSymbolGrid()}
+          </>
+        );
       case 'FINISHED':
         return (
           <div className={styles.results}>
