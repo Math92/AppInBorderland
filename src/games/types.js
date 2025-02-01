@@ -85,5 +85,16 @@ export const DIAMOND_GAMES = {
     transitionDelay: 3000,
     feedbackDuration: 3000,
     hintPenalty: 10 // Penalización por usar pista
+  },
+  TWO: {
+    id: '2-diamonds',
+    name: 'Patrones de Memoria',
+    description: 'Memoriza y reproduce secuencias de símbolos y colores',
+    difficulty: 2,
+    maxTime: 15, // 15 segundos para responder
+    minScore: 70,
+    baseScore: 30,
+    maxLevels: 2,
+    patternShowTime: 4000, // 4 segundos para mostrar el patrón
   }
 }

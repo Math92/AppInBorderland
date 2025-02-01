@@ -11,7 +11,9 @@ const cardMap = {
   'ace-hearts': 'AH',
   '2-hearts': '2H',
   '3-hearts': '3H',
-  'A-diamonds': 'AD'
+  'A-diamonds': 'AD',
+  '2-diamonds': '2D',
+
 };
 
 const PlayingCard = ({ cardId }) => {

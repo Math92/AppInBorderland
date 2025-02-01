@@ -10,6 +10,7 @@ import AceHearts from '../../games/hearts/AceHearts';
 import TwoHearts from '../../games/hearts/TwoHearts';
 import ThreeHearts from '../../games/hearts/ThreeHearts';
 import AceDiamonds from '../../games/diamonds/AceDiamonds';
+import TwoDiamonds from '../../games/diamonds/TwoDiamonds';
 
 const GameManager = () => {
   // Obtenemos state y dispatch del contexto a través de useGame
@@ -34,7 +35,8 @@ const GameManager = () => {
       'A-hearts': AceHearts,
       '2-hearts': TwoHearts,
       '3-hearts': ThreeHearts,
-      'A-diamonds': AceDiamonds
+      'A-diamonds': AceDiamonds,
+      '2-diamonds': TwoDiamonds
     };
 
     const GameComponent = gameMap[state.currentCard.id];
