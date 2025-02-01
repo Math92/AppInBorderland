@@ -1,36 +1,53 @@
-/* GameStart.module.css */
 .container {
   min-height: 100vh;
-  background: #111827;
+  background-image: url('../../assets/images/preview.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #fff;
-  width: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: 1rem;
+}
+
+.container::before {
+  content: '';
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1;
 }
 
 .header {
-  width: 100%;
-  max-width: 64rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: #1f2937;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
+  background: rgba(31, 41, 55, 0.95);
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  position: relative;
+  z-index: 2;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .userInfo {
+  max-width: 64rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userProfile {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
 .userEmail {
-  font-weight: 500;
   color: #9ca3af;
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .logoutButton {
