@@ -1,11 +1,11 @@
 // charactersData.js
-import arisuImage from '/src/assets/public/images/arisu.png';
-import usagiImage from '/src/assets/public/images/usagi.png';
-import chishiyaImage from '/src/assets/public/images/chishiya.png';
-import kuinaImage from '/src/assets/public/images/kuina.png';
-import annImage from '/src/assets/public/images/ann.png';
-import aguniImage from '/src/assets/public/images/aguni.png';
-import tattaImage from '/src/assets/public/images/tatta.png';
+import arisuImage from '../assets/public/images/arisu.png';
+import usagiImage from '../assets/public/images/usagi.png';
+import chishiyaImage from '../assets/public/images/chishiya.png';
+import kuinaImage from '../assets/public/images/kuina.png';
+import annImage from '../assets/public/images/ann.png';
+import aguniImage from '../assets/public/images/aguni.png';
+import tattaImage from '../assets/public/images/tatta.png';
 
 export const characters = [
   {
