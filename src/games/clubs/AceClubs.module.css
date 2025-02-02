@@ -1,0 +1,243 @@
+/* AceClubs.module.css */
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: #f0fdf4;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .header {
+    font-size: 1.5rem;
+    color: #166534;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-bottom: 2px solid #86efac;
+    text-align: center;
+  }
+  
+  .gameArea {
+    background: #f0fdf4;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 15px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .gameInfo {
+    text-align: center;
+    background: #134e4a;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    color: white;
+  }
+  
+  .teamArea {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: #f0fdf4;
+    position: relative;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid #16a34a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  
+  .playerName {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #134e4a;
+    text-align: center;
+  }
+  
+  .choiceIndicator {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -10px;
+    border: 3px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .checkmark {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .colorSelection {
+    text-align: center;
+    margin: 2rem 0;
+  }
+  
+  .colorButtons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .colorButton {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: relative;
+  }
+  
+  .colorButton:hover:not(:disabled) {
+    transform: scale(1.1);
+  }
+
+  /* AceClubs.module.css */
+/* ... (mantén los estilos existentes) */
+
+.choicesContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .finalChoices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+
+  /* AceClubs.module.css */
+/* ... (mantén los estilos existentes) */
+
+.finalChoices {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .choiceWithLabel {
+    text-align: center;
+    min-width: 150px;
+  }
+  
+  .colorHex {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: bold;
+  }
+  
+  .results {
+    animation: slideIn 0.5s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  
+  .colorResult {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 1rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .colorButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .colorButton.selected {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 3px white, 0 0 0 6px currentColor;
+  }
+  
+  .results {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    margin-top: 2rem;
+  }
+  
+  .success {
+    color: #16a34a;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #dcfce7;
+    border-radius: 8px;
+  }
+  
+  .failure {
+    color: #dc2626;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #fee2e2;
+    border-radius: 8px;
+  }
+  
+  @media (max-width: 640px) {
+    .container {
+      padding: 10px;
+    }
+  
+    .teamArea {
+      grid-template-columns: 1fr;
+    }
+  
+    .avatar {
+      width: 80px;
+      height: 80px;
+    }
+  
+    .colorButton {
+      width: 60px;
+      height: 60px;
+    }
+  }

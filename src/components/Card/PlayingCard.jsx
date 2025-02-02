@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styles from './PlayingCard.module.css';
 
 const formatCardId = (cardId) => {
+  // Añadir valor por defecto y validación
+  if (typeof cardId !== 'string') return '00';
   const [rank, suit] = cardId.toLowerCase().split('-');
   const rankMap = {
     'a': 'A',
@@ -29,8 +31,9 @@ const formatCardId = (cardId) => {
     'clubs': 'C'
   };
 
-  const formattedRank = rankMap[rank] || rank.toUpperCase();
-  const formattedSuit = suitMap[suit] || suit[0].toUpperCase();
+  // Validar componentes
+  const formattedRank = rank ? (rankMap[rank] || rank.toUpperCase()) : '0';
+  const formattedSuit = suit ? (suitMap[suit] || suit[0]?.toUpperCase() || '0') : '0';
 
   return `${formattedRank}${formattedSuit}`;
 };

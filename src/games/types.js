@@ -30,7 +30,7 @@ export const SPADE_GAMES = {
       description: 'Pulsa en los objetivos que aparecen antes de que desaparezcan',
       difficulty: 4,
       maxTime: 30,
-      minTarget: 20
+      minTarget: 10
     }
   };
 
@@ -116,12 +116,32 @@ export const DIAMOND_GAMES = {
 
 
 export const CLUB_GAMES = {
+  ACE: {
+    id: 'A-clubs',
+    name: 'Coordinación de Colores',
+    description: 'Selecciona el mismo color que tu compañero',
+    difficulty: 1,
+    maxTime: null,
+    teamSize: 2,
+    baseScore: 100,
+    turnDelay: 1000
+  },
+  TWO: {
+    id: '2-clubs',
+    name: 'Doble Coordinación',
+    description: 'Acierta dos colores en orden con tu compañero',
+    difficulty: 2,
+    maxTime: null,
+    teamSize: 2,
+    baseScore: 150,
+    turnDelay: 1000
+  },
   THREE: {
     id: '3-clubs',
     name: 'Suma en Equipo',
     description: 'Colabora para alcanzar un número objetivo tirando dados',
     difficulty: 3,
-    maxTime: 15,
+    maxTime: 20,
     teamSize: 2, // Número de jugadores requeridos
     baseScore: 100,
     turnDelay: 1500, // Tiempo de espera entre turnos de NPCs
