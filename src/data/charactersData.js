@@ -5,7 +5,7 @@ export const characters = [
     name: "Arisu",
     description: "Experto en lógica y estrategia",
     specialAbility: "Bonus en juegos de ♠",
-    avatar: 'https://robohash.org/Arisu',
+    avatar: '/src/assets/public/images/arisu.PNG',
     image: 'https://via.placeholder.com/150/92c952'
   },
   {
@@ -13,7 +13,7 @@ export const characters = [
     name: "Usagi", 
     description: "Atleta profesional",
     specialAbility: "Bonus en juegos de ♥",
-    avatar: 'https://robohash.org/Usagi',
+    avatar: '/src/assets/public/images/usagi.PNG',
     image: 'https://via.placeholder.com/150/771796'
   },
   {
@@ -21,7 +21,7 @@ export const characters = [
     name: "Chishiya",
     description: "Maestro de la manipulación",
     specialAbility: "Bonus en juegos de ♦",
-    avatar: 'https://robohash.org/Chishiya',
+    avatar: '/src/assets/public/images/chishiya.PNG',
     image: 'https://via.placeholder.com/150/24f355'
   },
   {
@@ -29,7 +29,7 @@ export const characters = [
     name: "Kuina",
     description: "Experta en combate",
     specialAbility: "Bonus en juegos físicos",
-    avatar: 'https://robohash.org/Kuina',
+    avatar: '/src/assets/public/images/kuina.PNG',
     image: 'https://via.placeholder.com/150/d32776'
   },
   {
@@ -37,23 +37,23 @@ export const characters = [
     name: "Ann",
     description: "Médica inteligente",
     specialAbility: "Bonus en juegos de estrategia",
-    avatar: 'https://robohash.org/Ann',
+    avatar: '/src/assets/public/images/ann.PNG',
     image: 'https://via.placeholder.com/150/f66b97'
   },
   {
     id: 6,
     name: "Aguni",
-    description: "Líder nato",
+    description: "Lider de grupo",
     specialAbility: "Bonus en juegos de ♣",
-    avatar: 'https://robohash.org/Aguni',
+    avatar: '/src/assets/public/images/aguni.PNG',
     image: 'https://via.placeholder.com/150/56a8c2'
   },
   {
     id: 7,
-    name: "Mira",
-    description: "Psicóloga observadora",
+    name: "Tatta",
+    description: "Colaborador Innato",
     specialAbility: "Bonus en juegos psicológicos",
-    avatar: 'https://robohash.org/Mira',
+    avatar: '/src/assets/public/images/tatta.PNG',
     image: 'https://via.placeholder.com/150/b0f7cc'
   }
 ];
