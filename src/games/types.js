@@ -113,3 +113,23 @@ export const DIAMOND_GAMES = {
     baseScore: 100 // Puntuación base por completar
     }
 }
+
+
+export const CLUB_GAMES = {
+  THREE: {
+    id: '3-clubs',
+    name: 'Suma en Equipo',
+    description: 'Colabora para alcanzar un número objetivo tirando dados',
+    difficulty: 3,
+    maxTime: 15,
+    teamSize: 2, // Número de jugadores requeridos
+    baseScore: 100,
+    turnDelay: 1500, // Tiempo de espera entre turnos de NPCs
+    targetRange: {
+      min: 5,
+      max: 15
+    },
+    minScore: 60
+  },
+  // Aquí puedes agregar más juegos de tréboles siguiendo el mismo patrón
+};

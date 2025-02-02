@@ -33,6 +33,11 @@ const IMPLEMENTED_CARDS = [
   ...ranks.slice(0, 3).map(rank => ({
     rank,
     suit: 'diamonds'
+  })),
+  // Cartas de tréboles (3)
+  ...ranks.slice(2, 3).map(rank => ({
+    rank,
+    suit: 'clubs'
   }))
 ];
 

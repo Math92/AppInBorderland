@@ -1,17 +1,19 @@
-import arusuAvatar from '/public/images/arisu.png';
+import arisuAvatar from '/public/images/arisu.png';
 import usagiAvatar from '/public/images/usagi.png';
 import chishiyaAvatar from '/public/images/chishiya.png';
 import kuinaAvatar from '/public/images/kuina.png';
 import annAvatar from '/public/images/ann.png';
 import aguniAvatar from '/public/images/aguni.png';
 import tattaAvatar from '/public/images/tatta.png';
+import niragiAvatar from '/public/images/niragi.png';
+
 export const characters = [
   {
     id: 1,
     name: "Arisu",
     description: "Experto en lógica y estrategia",
     specialAbility: "Bonus en juegos de ♠",
-    avatar: arusuAvatar, // Direct import
+    avatar: arisuAvatar, // Direct import
     image: 'https://via.placeholder.com/150/92c952'
   },
   {
@@ -61,5 +63,13 @@ export const characters = [
     specialAbility: "Bonus en juegos psicológicos",
     avatar: tattaAvatar, // Direct import
     image: 'https://via.placeholder.com/150/b0f7cc'
+  },
+  {
+    id: 8,
+    name: "Niragi",
+    description: "Estratega despiadado",
+    specialAbility: "Bonus en juegos de supervivencia",
+    avatar: niragiAvatar,
+    image: 'https://via.placeholder.com/150/c24bc2'
   }
 ];
