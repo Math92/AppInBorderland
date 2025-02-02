@@ -6,10 +6,8 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: [], // Esto permite que Firebase sea incluido en el bundle
+      external: [],
     },
+    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.svg', '**/*.webp'],
   },
-  optimizeDeps: {
-    include: ['firebase/app', 'firebase/database'] // Incluye los módulos de Firebase
-  }
 });
