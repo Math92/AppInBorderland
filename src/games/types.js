@@ -111,6 +111,21 @@ export const DIAMOND_GAMES = {
     points: 50 // Puntos extra por tiempo restante
     },
     baseScore: 100 // Puntuación base por completar
+    },
+    FOUR: {
+      id: '4-diamonds',
+      name: 'Secuencia Inversa',
+      description: 'Resuelve secuencias numéricas en orden inverso bajo presión',
+      difficulty: 4,
+      maxTime: 45, // Tiempo total en segundos
+      baseScore: 100,
+      minScore: 70,
+      sequenceLength: 5, // Longitud de la secuencia a memorizar
+      displayTime: 5, // segundos para mostrar la secuencia inicial
+      timeBonus: {
+        threshold: 20, // Segundos restantes para obtener bonificación
+        points: 50 // Puntos extra por tiempo restante
+      }
     }
 }
 

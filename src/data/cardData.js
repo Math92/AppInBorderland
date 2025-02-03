@@ -7,7 +7,7 @@ export const suits = {
     diamonds: {
       symbol: '♦',
       type: 'INTELLIGENCE',
-      description: 'Juegos de astucia y manipulación'
+      description: 'Juegos de astucia y Destreza Mental'
     },
     clubs: {
       symbol: '♣',
