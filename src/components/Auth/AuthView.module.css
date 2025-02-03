@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background-image: url('../../assets/public/images/preview.webp'); /* Asegúrate de que la imagen esté en public/ */
+  background-image: url('../../../public/images/preview.webp'); /* Asegúrate de que la imagen esté en public/ */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
