@@ -68,6 +68,19 @@ export const HEART_GAMES = {
     scorePerScenario: 50,
     transitionDelay: 3000,
     feedbackDuration: 3000
+  },
+  FOUR: {
+    id: '4-hearts',
+    name: 'Patrones Emocionales',
+    description: 'Analiza secuencias de emociones para predecir comportamientos',
+    difficulty: 4,
+    maxTime: 25,
+    minScore: 70,
+    patternsPerRound: 3,
+    baseScore: 30,
+    timeBonus: 0.5,
+    explanationDelay: 3000,
+    feedbackDuration: 3000
   }
 };
 

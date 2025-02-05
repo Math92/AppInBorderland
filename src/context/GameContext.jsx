@@ -25,7 +25,7 @@ const IMPLEMENTED_CARDS = [
     suit: 'spades'
   })),
   // Cartas de corazones (A, 2, 3)
-  ...ranks.slice(0, 3).map(rank => ({
+  ...ranks.slice(0, 4).map(rank => ({
     rank,
     suit: 'hearts'
   })),
