@@ -179,5 +179,18 @@ export const CLUB_GAMES = {
     },
     minScore: 60
   },
-  // Aquí puedes agregar más juegos de tréboles siguiendo el mismo patrón
+  FOUR : {
+    id: '4-clubs',
+    name: 'Patrones Sincronizados',
+    description: 'Coordina movimientos sincronizados con tu compañero',
+    difficulty: 4,
+    maxTime: 30,
+    teamSize: 2,
+    baseScore: 200,
+    turnDelay: 1000,
+    minScore: 80,
+    sequenceLength: 4,
+    patterns: ['↑', '↓', '←', '→'],
+    feedbackDelay: 2000
+  }
 };

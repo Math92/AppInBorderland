@@ -20,6 +20,7 @@ import AceClubs from '../../games/clubs/AceClubs';
 import TwoClubs from '../../games/clubs/TwoClubs';
 import FourDiamonds from '../../games/diamonds/FourDiamonds';
 import FourHearts from '../../games/hearts/FourHearts';
+import FourClubs from '../../games/clubs/FourClubs';
 
 const GameManager = () => {
   const { state, startGame, resetGame } = useGame();
@@ -100,7 +101,8 @@ const GameManager = () => {
       'A-clubs': AceClubs,
       '2-clubs': TwoClubs,
       '4-diamonds': FourDiamonds,
-      '4-hearts': FourHearts
+      '4-hearts': FourHearts,
+      '4-clubs': FourClubs
     };
 
     const GameComponent = gameMap[state.currentCard.id];
