@@ -31,6 +31,16 @@ export const SPADE_GAMES = {
       difficulty: 4,
       maxTime: 30,
       minTarget: 10
+    },
+    FIVE: {
+      id: '5-spades',
+      name: 'Ritmo de Combate',
+      description: 'Golpea al ritmo de los beats que caen',
+      difficulty: 5,
+      maxTime: 25,
+      minScore: 500,
+      beatSpeed: 3000, // ms que tarda en caer un beat
+      tolerance: 150 // ms de margen para el golpe
     }
   };
 

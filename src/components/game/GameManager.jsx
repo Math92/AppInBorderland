@@ -21,6 +21,7 @@ import TwoClubs from '../../games/clubs/TwoClubs';
 import FourDiamonds from '../../games/diamonds/FourDiamonds';
 import FourHearts from '../../games/hearts/FourHearts';
 import FourClubs from '../../games/clubs/FourClubs';
+import FiveSpades from '../../games/spades/FiveSpades';
 
 const GameManager = () => {
   const { state, startGame, resetGame } = useGame();
@@ -102,9 +103,10 @@ const GameManager = () => {
       '2-clubs': TwoClubs,
       '4-diamonds': FourDiamonds,
       '4-hearts': FourHearts,
-      '4-clubs': FourClubs
+      '4-clubs': FourClubs,
+     '5-spades': FiveSpades
     };
-
+1
     const GameComponent = gameMap[state.currentCard.id];
     return GameComponent ? <GameComponent /> : (
       <div className={styles.unavailableGame}>Juego no disponible</div>

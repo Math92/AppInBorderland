@@ -20,7 +20,7 @@ const actionTypes = {
 // Definimos las cartas implementadas usando el mismo patrón para todas
 const IMPLEMENTED_CARDS = [
   // Cartas de picas (A, 2, 3, 4)
-  ...ranks.slice(0, 4).map(rank => ({
+  ...ranks.slice(0, 5).map(rank => ({
     rank,
     suit: 'spades'
   })),
