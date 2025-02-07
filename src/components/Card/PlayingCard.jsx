@@ -1,6 +1,9 @@
 // PlayingCard.jsx
 import PropTypes from 'prop-types';
 import styles from './PlayingCard.module.css';
+import { useEffect, useState } from 'react';
+
+
 
 const formatCardId = (cardId) => {
   // Añadir valor por defecto y validación
@@ -17,7 +20,8 @@ const formatCardId = (cardId) => {
     '7': '7',
     '8': '8',
     '9': '9',
-    '10':'10',
+    '10':'0',
+    'ten': '0',
     'four': '4',
     'j': 'J',
     'q': 'Q',
@@ -40,34 +44,47 @@ const formatCardId = (cardId) => {
 
 const PlayingCard = ({ 
   cardId, 
-  size = 'medium'  // Usando parámetro por defecto en lugar de defaultProps
+  size = 'medium'
 }) => {
+  const [imageSrc, setImageSrc] = useState(null);
   const cardCode = formatCardId(cardId);
+  
+  useEffect(() => {
+    const loadImage = async () => {
+      try {
+        const url = `https://deckofcardsapi.com/static/img/${cardCode}.png`;
+        const response = await fetch(url);
+        if (response.ok) {
+          setImageSrc(url);
+        } else {
+          setImageSrc('https://deckofcardsapi.com/static/img/back.png');
+        }
+      } catch (error) {
+        console.error('Error loading card:', error);
+        setImageSrc('https://deckofcardsapi.com/static/img/back.png');
+      }
+    };
+    
+    loadImage();
+  }, [cardCode]);
+  
+  if (!imageSrc) {
+    return <div className={`${styles.cardContainer} ${styles[size]}`}>Loading...</div>;
+  }
   
   return (
     <div className={`${styles.cardContainer} ${styles[size]}`}>
       <img
-        src={`/cards/${cardCode}.png`}
+        src={imageSrc}
         alt={`Carta ${cardId}`}
         className={styles.cardImage}
-        onError={(e) => {
-          e.target.onerror = null;
-          // Intentar con API externa como fallback
-          e.target.src = `https://deckofcardsapi.com/static/img/${cardCode}.png`;
-        }}
       />
     </div>
   );
 };
-
 PlayingCard.propTypes = {
   cardId: PropTypes.string.isRequired,
   size: PropTypes.oneOf(['small', 'medium', 'large'])
 };
-
-// Eliminamos esta parte:
-// PlayingCard.defaultProps = {
-//   size: 'medium'
-// };
 
 export default PlayingCard;

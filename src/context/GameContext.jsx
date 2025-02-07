@@ -19,26 +19,26 @@ const actionTypes = {
 
 // Definimos las cartas implementadas usando el mismo patrón para todas
 const IMPLEMENTED_CARDS = [
-  // Cartas de picas (A, 2, 3, 4)
-  ...ranks.slice(0, 5).map(rank => ({
-    rank,
-    suit: 'spades'
-  })),
-  // Cartas de corazones (A, 2, 3)
-  ...ranks.slice(0, 4).map(rank => ({
-    rank,
-    suit: 'hearts'
-  })),
+  // // Cartas de picas (A, 2, 3, 4)
+  // ...ranks.slice(0, 5).map(rank => ({
+  //   rank,
+  //   suit: 'spades'
+  // })),
+  // // Cartas de corazones (A, 2, 3)
+  // ...ranks.slice(0, 4).map(rank => ({
+  //   rank,
+  //   suit: 'hearts'
+  // })),
   // Cartas de diamantes (A, 2, 3, 4)
-  ...ranks.slice(0, 4).map(rank => ({
+  ...ranks.slice(4, 5).map(rank => ({
     rank,
     suit: 'diamonds'
   })),
-  // Cartas de tréboles (3)
-  ...ranks.slice(0, 4).map(rank => ({
-    rank,
-    suit: 'clubs'
-  }))
+  // // Cartas de tréboles (3)
+  // ...ranks.slice(0, 4).map(rank => ({
+  //   rank,
+  //   suit: 'clubs'
+  // }))
 ];
 
 const createInitialDeck = () => 

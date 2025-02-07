@@ -149,6 +149,36 @@ export const DIAMOND_GAMES = {
         threshold: 20, // Segundos restantes para obtener bonificación
         points: 50 // Puntos extra por tiempo restante
       }
+    },
+    FIVE: {
+      id: '5-diamonds',
+      name: 'Cinco de Diamantes',
+      description: 'Combina cartas y operaciones para maximizar tu puntuación',
+      maxTime: 30,
+      minScore: 50,
+      roundsPerGame: 3,
+      cardsPerRound: 3,
+      bonusMultiplier: 1.5,
+      cardValues: {
+        min: 2,
+        max: 10
+      },
+      operators: {
+        '+': { points: 1.0, constraint: 'none' },
+        '-': { points: 1.5, constraint: 'positive' },
+        '*': { points: 0.5, constraint: 'max_50' },
+        '/': { points: 2.0, constraint: 'integer' }
+      },
+      specialCards: ['5D', '10D'],
+      bonusRules: {
+        consecutive: 1.2,
+        specialCombo: 1.5
+      },
+      feedback: {
+        win: '🌟 ¡Victoria! Has dominado las operaciones matemáticas',
+        lose: '😔 Necesitas diversificar tus estrategias matemáticas'
+      },
+      cardCodes: ['2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '0D']
     }
 }
 
