@@ -91,7 +91,31 @@ export const HEART_GAMES = {
     timeBonus: 0.5,
     explanationDelay: 3000,
     feedbackDuration: 3000
-  }
+  },
+  FIVE: {
+    id: '5-hearts',
+    name: 'Equilibrio Emocional',
+    description: 'Mantén el equilibrio emocional de un grupo en tiempo real',
+    difficulty: 5,
+    maxTime: 45, // Reducido de 60 a 45 segundos
+    minScore: 60, // Reducido de 80 a 60 puntos
+    baseScore: 50, // Reducido de 100 a 50 puntos
+    timeBonus: {
+      threshold: 15, // Reducido de 30 a 15 segundos
+      points: 30 // Reducido de 50 a 30 puntos
+    },
+    moodRange: {
+      min: -100,
+      max: 100,
+      warningThreshold: 60, // Reducido de 70 a 60
+      criticalThreshold: 80 // Reducido de 90 a 80
+    },
+    eventFrequency: 3000, // Aumentado de 2000 a 3000ms para dar más tiempo
+    stabilityBonus: 15, // Reducido de 20 a 15
+    penaltyRate: 3, // Reducido de 5 a 3
+    groupSize: 5,
+    maxSimultaneousEvents: 2 // Reducido de 3 a 2 eventos simultáneos
+}
 };
 
 // Tipos de juegos de diamantes (Astucia y Destreza Mental)

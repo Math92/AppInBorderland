@@ -1,0 +1,360 @@
+/* FiveHearts.module.css */
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff5f5;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .header {
+    font-size: 1.5rem;
+    color: #cc0000;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-bottom: 2px solid #ffcccc;
+    text-align: center;
+  }
+  
+  .gameArea {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 15px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .moodMeter {
+    margin: 2rem 0;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 8px;
+  }
+  
+  .moodBar {
+    height: 30px;
+    background: #e5e7eb;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .moodLevel {
+    height: 100%;
+    transition: all 0.3s ease;
+    position: absolute;
+  }
+  
+  .moodLabels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    color: #4b5563;
+    font-size: 0.875rem;
+  }
+  
+  .eventsContainer {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    margin-top: 2rem;
+  }
+  
+  .eventCard {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .eventHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .eventType {
+    background: #cc0000;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+  
+  .eventMember {
+    color: #4b5563;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    background: #e5e7eb;
+    border-radius: 4px;
+  }
+  
+  .eventDescription {
+    color: #1f2937;
+    margin: 0.75rem 0;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .responseOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .responseButton {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    padding: 0.75rem;
+    border-radius: 6px;
+    color: #374151;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .responseButton:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+  }
+  
+  .responseButton:active {
+    transform: translateY(0);
+  }
+  
+  .results {
+    text-align: center;
+    padding: 2rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .results h2 {
+    color: #cc0000;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .finalScore {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .finalMood {
+    font-size: 1.2rem;
+    color: #4b5563;
+    margin-bottom: 2rem;
+  }
+  
+  .eventsSummary {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .eventsSummary h3 {
+    color: #cc0000;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .eventSummary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .eventSummary:last-child {
+    border-bottom: none;
+  }
+  
+  .positive {
+    color: #059669;
+    font-weight: bold;
+  }
+  
+  .negative {
+    color: #dc2626;
+    font-weight: bold;
+  }
+  
+  .warningBar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #fbbf24;
+  }
+  
+  .warningBar.left {
+    left: 30%;
+  }
+  
+  .warningBar.right {
+    right: 30%;
+  }
+  
+  .criticalBar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #dc2626;
+  }
+  
+  .criticalBar.left {
+    left: 10%;
+  }
+  
+  .criticalBar.right {
+    right: 10%;
+  }
+  
+  @media (max-width: 640px) {
+    .container {
+      padding: 10px;
+    }
+  
+    .eventsContainer {
+      grid-template-columns: 1fr;
+    }
+  
+    .eventCard {
+      font-size: 0.9rem;
+    }
+  
+    .responseButton {
+      padding: 0.5rem;
+    }
+  
+    .eventsSummary {
+      padding: 1rem;
+    }
+  
+    .eventSummary {
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header {
+      font-size: 1.2rem;
+    }
+  
+    .moodLabels {
+      font-size: 0.75rem;
+    }
+  
+    .finalScore {
+      font-size: 1.2rem;
+    }
+  }
+
+
+  /* Añadir al FiveHearts.module.css */
+
+.moodValue {
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  .moodStatus {
+    text-align: center;
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+  }
+  
+  .stable {
+    color: #059669;
+    font-weight: 600;
+  }
+  
+  .warning {
+    color: #d97706;
+    font-weight: 600;
+  }
+  
+  .critical {
+    color: #dc2626;
+    font-weight: 600;
+  }
+  
+  .warningBar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #f59e0b;
+    opacity: 0.5;
+    z-index: 1;
+  }
+  
+  .criticalBar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #dc2626;
+    opacity: 0.5;
+    z-index: 1;
+  }
+  
+  .moodLevel {
+    height: 100%;
+    transition: all 0.3s ease;
+    position: absolute;
+    z-index: 2;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .eventWarning {
+    display: block;
+    margin-top: 0.5rem;
+    color: #d97706;
+    font-size: 0.875rem;
+    font-weight: 600;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
