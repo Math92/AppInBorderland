@@ -11,27 +11,25 @@ const FiveSpades = () => {
   const [timeLeft, setTimeLeft] = useState(gameConfig.maxTime);
   const [isFinished, setIsFinished] = useState(false);
   const [score, setScore] = useState(0);
-  const [combo, setCombo] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [beats, setBeats] = useState([]);
   const [isStarting, setIsStarting] = useState(true);
   const [countdown, setCountdown] = useState(3);
   
   const beatIdRef = useRef(0);
-  const scoreRef = useRef({ perfect: 0, good: 0, miss: 0, total: 0 });
   const animationFrameRef = useRef();
   const intervalsRef = useRef([]);
 
+  // Fin del juego cuando se acaba el tiempo
   useEffect(() => {
-    if (timeLeft <= 0 && !isFinished) {
-      const success = score >= gameConfig.minScore; // Ahora compara con 450
-      updateResults({
-        score: Math.round(score),
-        success: success
-      });
+    if (timeLeft <= 0) {
       setIsFinished(true);
+      updateResults({
+        score,
+        success: score >= gameConfig.minScore
+      });
     }
-  }, [timeLeft, isFinished, score, updateResults]);
+  }, [timeLeft, score, updateResults]);
 
   // Countdown inicial
   useEffect(() => {
@@ -50,7 +48,7 @@ const FiveSpades = () => {
       setTimeLeft(prev => prev > 0 ? prev - 1 : 0);
     }, 1000);
     
-    // Generador de beats
+    // Generador de beats cada 3 segundos
     const beatInterval = setInterval(() => {
       const newBeat = {
         id: beatIdRef.current++,
@@ -58,22 +56,30 @@ const FiveSpades = () => {
         hit: false
       };
       setBeats(prev => [...prev, newBeat]);
-    }, gameConfig.beatSpeed);
+    }, 3000);
 
-    // Animación
+    // Animación simple de caída
     const animate = () => {
       if (!isFinished) {
-        setBeats(currentBeats => 
-          currentBeats.map(beat => ({
-            ...beat,
-            position: ((Date.now() - beat.timing) / gameConfig.beatSpeed) * 100
-          })).filter(beat => beat.position < 100)
-        );
+        setBeats(currentBeats => {
+          return currentBeats
+            .filter(beat => {
+              const elapsed = Date.now() - beat.timing;
+              // Mantener beats hasta que lleguen al final (3 segundos)
+              return elapsed < 3000;
+            })
+            .map(beat => {
+              const elapsed = Date.now() - beat.timing;
+              // Posición de 0 a 100
+              const position = (elapsed / 3000) * 100;
+              return { ...beat, position };
+            });
+        });
         animationFrameRef.current = requestAnimationFrame(animate);
       }
     };
-    animationFrameRef.current = requestAnimationFrame(animate);
 
+    animationFrameRef.current = requestAnimationFrame(animate);
     intervalsRef.current.push(timer, beatInterval);
     
     return () => {
@@ -82,48 +88,37 @@ const FiveSpades = () => {
     };
   };
 
+  // Simplificada la lógica de golpe
   const handleHit = () => {
     if (isFinished || isStarting) return;
     
-    const now = Date.now();
+    // Encontrar la bola más cercana a la zona de hit (70-85%)
     const targetBeat = beats.find(beat => {
-      const expectedHitTime = beat.timing + gameConfig.beatSpeed;
-      return !beat.hit && Math.abs(now - expectedHitTime) <= gameConfig.tolerance;
+      const pos = beat.position;
+      // Zona de hit más grande y más abajo
+      return !beat.hit && pos >= 70 && pos <= 85;
     });
 
     if (targetBeat) {
-      const timeDiff = Math.abs(now - (targetBeat.timing + gameConfig.beatSpeed));
-      let points = 0;
-      
-      if (timeDiff <= 75) { // 150ms de tolerance dividido en 2 rangos
-        setFeedback('¡PERFECTO! 🎯');
-        points = 100;
-        scoreRef.current.perfect++;
-        setCombo(c => c + 1);
-      } else {
-        setFeedback('¡BIEN! ✨');
-        points = 50;
-        scoreRef.current.good++;
-        setCombo(c => c + 1);
-      }
-
+      setFeedback('¡BIEN! +100 🎯');
+      setScore(prev => prev + 100);
+      // Marcar como golpeada y mostrar efecto
       setBeats(prev => prev.map(b => 
         b.id === targetBeat.id ? { ...b, hit: true } : b
       ));
       
-      scoreRef.current.total++;
-      // En handleHit, modificar el cálculo de puntos
-setScore(prev => prev + points * (combo >= 3 ? 2 : 1)); // Multiplicador más accesible
-      
-      // Reset feedback después de 800ms
+      // Mostrar feedback por más tiempo
       setTimeout(() => setFeedback(''), 800);
     } else {
-      setFeedback('¡FALLASTE! 💨');
-      scoreRef.current.miss++;
-      setCombo(0);
-      setTimeout(() => setFeedback(''), 800);
+      // Feedback opcional cuando fallas
+      const anyCloseBeat = beats.find(beat => !beat.hit && beat.position > 50);
+      if (anyCloseBeat) {
+        setFeedback('¡Casi! ⚡️');
+        setTimeout(() => setFeedback(''), 300);
+      }
     }
   };
+
   if (isStarting) {
     return (
       <div className={styles.container}>
@@ -133,7 +128,6 @@ setScore(prev => prev + points * (combo >= 3 ? 2 : 1)); // Multiplicador más ac
           <div className={styles.countdown}>{countdown}</div>
           <div className={styles.tutorial}>
             <p>Golpea cuando los beats lleguen a la zona roja</p>
-            <p>¡Mantén el combo para multiplicar tu puntuación!</p>
           </div>
         </div>
       </div>
@@ -144,7 +138,7 @@ setScore(prev => prev + points * (combo >= 3 ? 2 : 1)); // Multiplicador más ac
     <div className={styles.container}>
       <PlayingCard cardId="5-spades" />
       <div className={styles.header}>
-        Tiempo: {timeLeft}s | Puntos: {score} | Combo: {combo}x
+        Tiempo: {timeLeft}s | Puntos: {score}
       </div>
 
       <div className={styles.gameArea}>
@@ -173,12 +167,9 @@ setScore(prev => prev + points * (combo >= 3 ? 2 : 1)); // Multiplicador más ac
 
       {isFinished && (
         <div className={styles.results}>
-          <h3>Resultados</h3>
-          <div className={styles.stats}>
-            <p>Perfectos: {scoreRef.current.perfect}</p>
-            <p>Buenos: {scoreRef.current.good}</p>
-            <p>Fallos: {scoreRef.current.miss}</p>
-          </div>
+          <h3>¡Juego Terminado!</h3>
+          <p>Puntuación final: {score}</p>
+          <p>{score >= gameConfig.minScore ? '¡Victoria!' : 'Intenta de nuevo'}</p>
         </div>
       )}
     </div>
