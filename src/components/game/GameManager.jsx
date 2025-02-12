@@ -24,6 +24,7 @@ import FourClubs from '../../games/clubs/FourClubs';
 import FiveSpades from '../../games/spades/FiveSpades';
 import FiveDiamonds from '../../games/diamonds/FiveDiamonds';
 import FiveHearts from '../../games/hearts/FiveHearts';
+import FiveClubs from '../../games/clubs/FiveClubs';
 const GameManager = () => {
   const { state, startGame, resetGame } = useGame();
   const [cardEarned, setCardEarned] = useState(false);
@@ -107,7 +108,8 @@ const GameManager = () => {
       '4-clubs': FourClubs,
      '5-spades': FiveSpades,
      '5-diamonds': FiveDiamonds,
-     '5-hearts': FiveHearts
+     '5-hearts': FiveHearts,
+     '5-clubs': FiveClubs
       };
 1
     const GameComponent = gameMap[state.currentCard.id];

@@ -256,5 +256,24 @@ export const CLUB_GAMES = {
     sequenceLength: 4,
     patterns: ['↑', '↓', '←', '→'],
     feedbackDelay: 2000
+  },
+  FIVE: {
+    id: '5-clubs',
+    name: 'Defensa en Equipo',
+    description: 'Coordina la defensa con tu compañero para bloquear ataques',
+    difficulty: 5,
+    maxTime: 45,
+    teamSize: 2,
+    baseScore: 700,
+    minScore: 100,
+    turnDelay: 800,
+    // Configuración específica para la defensa
+    attackPatterns: ['⚡', '🔥', '❄️', '💫'],
+    attackSpeed: 2000,  // ms entre ataques
+    defendZones: ['Arriba', 'Abajo', 'Izquierda', 'Derecha'],
+    comboMultiplier: 1.5,
+    perfectBlock: 100,  // puntos por bloqueo perfecto
+    goodBlock: 50,      // puntos por bloqueo bueno
+    missedBlock: -30    // penalización por fallo
   }
 };

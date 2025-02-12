@@ -1,0 +1,319 @@
+/* FiveClubs.module.css */
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: #f0fdf4;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .header {
+    font-size: 1.5rem;
+    color: #166534;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-bottom: 2px solid #86efac;
+    text-align: center;
+  }
+  
+  .gameArea {
+    background: #f0fdf4;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 15px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  /* Zona de ataque */
+  .attackZone {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    min-height: 100px;
+  }
+  
+  .attack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  .attackSymbol {
+    font-size: 2.5rem;
+    padding: 1rem;
+    background: #134e4a;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  }
+  
+  .attackDirection {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #134e4a;
+  }
+  
+  /* Equipo */
+  .teamDisplay {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+  
+  .playerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .avatar {
+    width: 50px;  /* o el tamaño que prefieras */
+    height: 50px;
+    object-fit: cover;  /* Esto ayuda a mantener la proporción */
+    border-radius: 50%; /* Si quieres que sea circular */
+  }
+  
+  .playerName {
+    font-weight: 600;
+    color: #134e4a;
+    font-size: 1.1rem;
+  }
+  
+  .defenseZone {
+    font-size: 1.2rem;
+    padding: 0.75rem 1.5rem;
+    background: #dcfce7;
+    border-radius: 8px;
+    color: #166534;
+    font-weight: 600;
+  }
+  
+  /* Controles */
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 2rem auto;
+    max-width: 400px;
+  }
+  
+  .controlButton {
+    font-size: 1.2rem;
+    padding: 1.5rem;
+    background: #15803d;
+    color: white;
+    border: 2px solid #0f5c2a;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+  }
+  
+  .controlButton:hover:not(:disabled) {
+    background: #166534;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  }
+  
+  .controlButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Feedback */
+  .feedback {
+    font-size: 2rem;
+    text-align: center;
+    min-height: 3rem;
+    margin: 1rem 0;
+    color: #134e4a;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+/* Resultados */
+.results {
+  text-align: center;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  margin-top: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  animation: slideUp 0.5s ease-out;
+}
+
+.results h3 {
+  color: #166534;
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.evaluationDetails {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: #f0fdf4;
+  border-radius: 8px;
+  border: 1px solid #86efac;
+}
+
+.evaluationDetails p {
+  margin: 0.75rem 0;
+  color: #134e4a;
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 6px;
+}
+
+.finalScore {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin: 1.5rem 0;
+  color: #16a34a;
+  padding: 1rem;
+  background: #dcfce7;
+  border-radius: 8px;
+}
+
+.success {
+  color: #16a34a;
+  background: #dcfce7;
+  padding: 1.25rem;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 2px solid #86efac;
+  font-size: 1.4rem;
+  margin-top: 1.5rem;
+}
+
+.failure {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 1.25rem;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 2px solid #fecaca;
+  font-size: 1.4rem;
+  margin-top: 1.5rem;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container {
+    padding: 10px;
+  }
+
+  .attackZone {
+    padding: 1rem;
+  }
+
+  .attackSymbol {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+  }
+
+  .teamDisplay {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    grid-template-columns: 1fr;
+    max-width: 300px;
+  }
+
+  .controlButton {
+    padding: 1rem;
+  }
+
+  .evaluationDetails p {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .results {
+    padding: 1rem;
+  }
+
+  .results h3 {
+    font-size: 1.3rem;
+  }
+
+  .finalScore {
+    font-size: 1.4rem;
+    padding: 0.75rem;
+  }
+
+  .success,
+  .failure {
+    font-size: 1.2rem;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    font-size: 1.2rem;
+    padding: 10px;
+  }
+
+  .feedback {
+    font-size: 1.5rem;
+  }
+
+  .attackSymbol {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+
+  .controlButton {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+}
